@@ -2,6 +2,7 @@ import { ConfigModule } from "@nestjs/config"
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 
+import { UserModule } from "./modules/users/users.module"
 import * as path from "path"
 
 @Module({
@@ -17,7 +18,8 @@ import * as path from "path"
             ssl: false,
             entities: [path.resolve(__dirname, "./database/models/*{.js,.ts}")],
             synchronize: false
-        })
+        }),
+        UserModule
     ]
 })
 
