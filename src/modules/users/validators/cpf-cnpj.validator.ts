@@ -1,4 +1,4 @@
-import { BadRequestException } from "@nestjs/common"
+import { UnprocessableEntityException } from "@nestjs/common"
 
 export class CpfCnpjValidator {
     static validate(value: string): boolean {
@@ -10,7 +10,7 @@ export class CpfCnpjValidator {
         if(cleaned.length === 14)
             return this.isValidCNPJ(cleaned)
 
-        throw new BadRequestException("CPF deve ter 11 dígitos e CNPJ deve ter 14 dígitos")
+        throw new UnprocessableEntityException("CPF deve ter 11 dígitos e CNPJ deve ter 14 dígitos")
     }
 
     static isValidCPF(cpf: string): boolean {
@@ -38,7 +38,7 @@ export class CpfCnpjValidator {
         const isValid = secondDigit === parseInt(cpf.charAt(10))
 
         if(!isValid)
-            throw new BadRequestException("CPF inválido")
+            throw new UnprocessableEntityException("CPF inválido")
 
         return isValid
     }
@@ -67,7 +67,7 @@ export class CpfCnpjValidator {
         )
 
         if(!isValid)
-            throw new BadRequestException("CNPJ inválido")
+            throw new UnprocessableEntityException("CNPJ inválido")
         
         return isValid
     }
