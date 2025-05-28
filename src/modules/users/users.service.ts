@@ -5,7 +5,7 @@ import {
 
 import { CreateUserDto } from "./dto/create-user.dto"
 import { HashService } from "@/common/hash/hash.service"
-import { IUserRepository } from "./repositories/interfaces/user-repository.interface"
+import { IUserRepository } from "./interfaces/user-repository.interface"
 import { toUserResponse } from "./mapper/user.mapper"
 import { UserCreateValidator } from "./validators/user-create.validator"
 

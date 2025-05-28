@@ -9,7 +9,7 @@ import {
 } from "@nestjs/swagger"
 
 import { CreateUserDto } from "./dto/create-user.dto"
-import { UserResponseDto } from "./dto/create-user-response.dto"
+import { UserResponseDto } from "./dto/user-response.dto"
 import { UserService } from "./users.service"
 
 @Controller("/api/User")

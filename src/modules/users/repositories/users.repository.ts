@@ -6,7 +6,7 @@ import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
 import { BaseRepository } from "@/common/base/base.repository"
-import { IUserRepository } from "./interfaces/user-repository.interface"
+import { IUserRepository } from "../interfaces/user-repository.interface"
 import { User } from "@/database/models/users.entity"
 
 @Injectable()

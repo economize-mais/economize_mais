@@ -1,5 +1,5 @@
 import { User } from "@/database/models/users.entity"
-import { UserResponseDto } from "../dto/create-user-response.dto"
+import { UserResponseDto } from "../dto/user-response.dto"
 
 export const toUserResponse = (user: User, token: string): UserResponseDto => {
     const {
