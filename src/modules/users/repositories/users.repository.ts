@@ -1,28 +1,27 @@
 import { 
-    DeepPartial, 
-    Repository 
-} from "typeorm"
-import { Injectable } from "@nestjs/common"
+    ConflictException, 
+    Injectable 
+} from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
 
 import { BaseRepository } from "@/common/base/base.repository"
-import { HashService } from "@/common/hash/hash.service"
+import { IUserRepository } from "./interfaces/user-repository.interface"
 import { User } from "@/database/models/users.entity"
 
 @Injectable()
-export class UserRepository extends BaseRepository<User> {
+export class UserRepository extends BaseRepository<User> implements IUserRepository {
 
     constructor(
         @InjectRepository(User)
-        private readonly repo: Repository<User>,
-        private readonly hashProvider: HashService
+        private readonly repo: Repository<User>
     ) {
         super(repo)
     }
 
-    override async create<D extends DeepPartial<User>>(data: D): Promise<User> {
-        const hashPassoword = await this.hashProvider.hash(data.password)
-        const user = { ...data, password: hashPassoword }
-        return this.repo.save(this.repo.create(user))
+    async emailExists(email: string): Promise<void> {
+        const user = await this.repo.findOne({ where: { email } })
+        if (user)
+            throw new ConflictException(`Email ${email} já está em uso`)
     }
 }

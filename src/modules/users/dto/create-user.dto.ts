@@ -9,15 +9,8 @@ import {
 } from "class-validator"
 import { ApiProperty } from "@nestjs/swagger"
 
-export enum Gender {
-    M = "M",
-    F = "F"
-}
-
-export enum UserType {
-    USER = "USER",
-    COMPANY = "COMPANY"
-}
+import { Gender } from "../enums/gender.enum"
+import { UserType } from "../enums/user-type.enum"
 
 export class CreateUserDto {
     @ApiProperty({ example: "user@example.com" })
@@ -37,7 +30,7 @@ export class CreateUserDto {
     @ApiProperty({ example: "12345678901" })
     @IsString()
     @Matches(/^\d{11,14}$/, {
-        message: "CPF/CNPJ must have between 11 and 14 digits",
+        message: "CPF/CNPJ must have between 11 and 14 digits"
     })
     cpfCnpj: string
 

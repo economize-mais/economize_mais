@@ -1,7 +1,7 @@
 {
   "name": "economize_mais",
   "version": "0.0.1",
-  "description": "API do aplicativo Economize Mais",
+  "description": "Apis do aplicativo Economize Mais",
   "author": "Economize Mais",
   "private": true,
   "license": "UNLICENSED",
