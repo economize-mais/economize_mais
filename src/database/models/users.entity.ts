@@ -6,6 +6,9 @@ import {
     UpdateDateColumn 
 } from "typeorm"
 
+import { Gender } from "@/modules/users/enums/gender.enum"
+import { UserType } from "@/modules/users/enums/user-type.enum"
+
 @Entity("users")
 export class User {
     @PrimaryGeneratedColumn("uuid")
@@ -27,10 +30,10 @@ export class User {
     birthDate?: Date
 
     @Column({ type: "char", length: 1, nullable: true, comment: "M = Male, F = Female" })
-    gender?: "M" | "F"
+    gender?: Gender
 
     @Column({ name: "user_type", comment: "'USER' for normal users, 'COMPANY' for supermarkets" })
-    userType: "USER" | "COMPANY"
+    userType: UserType
 
     @Column({ name: "company_name", nullable: true })
     companyName?: string
