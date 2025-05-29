@@ -7,6 +7,6 @@ if (!name) {
     process.exit(1)
 }
 
-const command = `npx typeorm migration:create src/database/migrations/${name}`
+const command = `npx typeorm migration:create src/infra/database/migrations/${name}`
 console.log(`▶️ Executando: ${command}`)
 execSync(command, { stdio: "inherit" })

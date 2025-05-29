@@ -2,11 +2,11 @@ import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 
 import { CommonModule } from "@/common/common.module"
-import { IUserRepository } from "./interfaces/user-repository.interface"
-import { User } from "@/database/models/users.entity"
+import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"
+import { User } from "@/modules/users/domain/entities/users.entity"
 import { UserController } from "./users.controller"
-import { UserRepository } from "./repositories/users.repository"
-import { UserService } from "./users.service"
+import { USER_REPOSITORY } from "./domain/interfaces/user-repository.interface"
+import { UserRepository } from "./infrastructure/repositories/users.repository"
 
 @Module({
     imports: [
@@ -18,14 +18,14 @@ import { UserService } from "./users.service"
     ],
     providers: [
         UserRepository,
-        UserService,
+        CreateServiceUseCase,
         {
-            provide: IUserRepository,
+            provide: USER_REPOSITORY,
             useClass: UserRepository
         }
     ],
     exports: [
-        IUserRepository
+        USER_REPOSITORY
     ]
 })
 

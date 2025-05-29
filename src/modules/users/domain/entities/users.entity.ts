@@ -6,8 +6,8 @@ import {
     UpdateDateColumn 
 } from "typeorm"
 
-import { Gender } from "@/modules/users/enums/gender.enum"
-import { UserType } from "@/modules/users/enums/user-type.enum"
+import { Gender } from "@/modules/users/domain/enums/gender.enum"
+import { UserType } from "@/modules/users/domain/enums/user-type.enum"
 
 @Entity("users")
 export class User {

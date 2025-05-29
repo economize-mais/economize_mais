@@ -8,23 +8,23 @@ import {
     ApiTags 
 } from "@nestjs/swagger"
 
-import { CreateUserDto } from "./dto/create-user.dto"
-import { UserResponseDto } from "./dto/user-response.dto"
-import { UserService } from "./users.service"
+import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"
+import { CreateUserDto } from "./application/dto/create-user.dto"
+import { UserResponseDto } from "./application/dto/create-user-response.dto"
 
 @Controller("/api/User")
 @ApiTags("User routes")
 export class UserController {
 
     constructor(
-        private readonly service: UserService
+        private readonly create: CreateServiceUseCase
     ) {}
 
     @Post()
     @ApiResponse({ status: 201, type: UserResponseDto })
     @ApiResponse({ status: 409, description: "conflito de e-mail"})
     @ApiResponse({ status: 422, description: "corpo da requisicao com dados inválidos"})
-    async create(@Body() user: CreateUserDto) {
-        return await this.service.create(user)
+    async createUser(@Body() user: CreateUserDto) {
+        return await this.create.execute(user)
     }
 }

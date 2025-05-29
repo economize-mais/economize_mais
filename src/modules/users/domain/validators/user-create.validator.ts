@@ -1,7 +1,7 @@
 import { UnprocessableEntityException } from "@nestjs/common"
 
 import { CpfCnpjValidator } from "./cpf-cnpj.validator"
-import { CreateUserDto } from "../dto/create-user.dto"
+import { CreateUserDto } from "../../application/dto/create-user.dto"
 
 export class UserCreateValidator {
 

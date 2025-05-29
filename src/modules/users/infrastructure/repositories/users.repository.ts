@@ -1,13 +1,10 @@
-import { 
-    ConflictException, 
-    Injectable 
-} from "@nestjs/common"
+import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
 import { BaseRepository } from "@/common/base/base.repository"
-import { IUserRepository } from "../interfaces/user-repository.interface"
-import { User } from "@/database/models/users.entity"
+import { IUserRepository } from "../../domain/interfaces/user-repository.interface"
+import { User } from "@/modules/users/domain/entities/users.entity"
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> implements IUserRepository {
@@ -19,9 +16,8 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
         super(repo)
     }
 
-    async emailExists(email: string): Promise<void> {
+    async isEmailTaken(email: string): Promise<boolean> {
         const user = await this.repo.findOne({ where: { email } })
-        if (user)
-            throw new ConflictException(`Email ${email} já está em uso`)
+        return !!user
     }
 }

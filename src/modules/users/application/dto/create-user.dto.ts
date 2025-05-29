@@ -9,8 +9,8 @@ import {
 } from "class-validator"
 import { ApiProperty } from "@nestjs/swagger"
 
-import { Gender } from "../enums/gender.enum"
-import { UserType } from "../enums/user-type.enum"
+import { Gender } from "../../domain/enums/gender.enum"
+import { UserType } from "../../domain/enums/user-type.enum"
 
 export class CreateUserDto {
     @ApiProperty({ example: "user@example.com" })
