@@ -30,6 +30,6 @@ export class CreateServiceUseCase {
         const entity = { ...data, password: hashPassoword }
         const user = await this.repo.create(entity)
 
-        return userToResponse(user, "")
+        return userToResponse(user)
     }
 }

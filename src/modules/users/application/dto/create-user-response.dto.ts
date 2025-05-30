@@ -30,7 +30,4 @@ export class UserResponseDto {
 
     @ApiProperty({ example: "https://example.com/logo.png", required: false })
     logoUrl?: string
-
-    @ApiProperty({ example: "eyJhbGciOiJIUzI1NiIsInR5cCI6..." })
-    token: string
 }
