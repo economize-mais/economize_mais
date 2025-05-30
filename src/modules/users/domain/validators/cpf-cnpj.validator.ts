@@ -1,16 +1,11 @@
-import { UnprocessableEntityException } from "@nestjs/common"
-
 export class CpfCnpjValidator {
     static validate(value: string): boolean {
         const cleaned = value.replace(/\D/g, "")
 
-        if(cleaned.length === 11)
-            return this.isValidCPF(cleaned)
+        if(cleaned.length === 11) return this.isValidCPF(cleaned)
+        if(cleaned.length === 14) return this.isValidCNPJ(cleaned)
 
-        if(cleaned.length === 14)
-            return this.isValidCNPJ(cleaned)
-
-        throw new UnprocessableEntityException("CPF deve ter 11 dígitos e CNPJ deve ter 14 dígitos")
+        return false
     }
 
     static isValidCPF(cpf: string): boolean {
@@ -35,12 +30,7 @@ export class CpfCnpjValidator {
 
         if(secondDigit >= 10) secondDigit = 0
 
-        const isValid = secondDigit === parseInt(cpf.charAt(10))
-
-        if(!isValid)
-            throw new UnprocessableEntityException("CPF inválido")
-
-        return isValid
+        return secondDigit === parseInt(cpf.charAt(10))
     }
 
     static isValidCNPJ(cnpj: string): boolean {
@@ -61,14 +51,9 @@ export class CpfCnpjValidator {
         const digit1 = calcCheckDigit(cnpj.slice(0, 12), weights1)
         const digit2 = calcCheckDigit(cnpj.slice(0, 12) + digit1, weights2)
 
-        const isValid = (
+        return (
             digit1 === parseInt(cnpj.charAt(12)) &&
             digit2 === parseInt(cnpj.charAt(13))
         )
-
-        if(!isValid)
-            throw new UnprocessableEntityException("CNPJ inválido")
-        
-        return isValid
     }
 }

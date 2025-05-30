@@ -2,43 +2,39 @@ import { UnprocessableEntityException } from "@nestjs/common"
 
 import { CpfCnpjValidator } from "./cpf-cnpj.validator"
 import { CreateUserDto } from "../../application/dto/create-user.dto"
+import { PasswordValidator } from "./password.validator"
+import { RequiredFieldsValidator } from "./required-fields.validator"
 
 export class UserCreateValidator {
-
-    public validate(data: CreateUserDto): boolean {
+    public validate(data: CreateUserDto): void {
         if(!data)
             throw new UnprocessableEntityException("Dados do usuário são obrigatórios")
 
+        PasswordValidator.validate(data.password)
+
         switch(data.userType) {
             case "USER":
-                return this.validateUserFields(data)
+                this.validateUserFields(data)
+                break
             case "COMPANY":
-                return this.validateCompanyFields(data)
+                this.validateCompanyFields(data)
+                break
             default:
                 throw new UnprocessableEntityException("Tipo de usuário inválido")
         }
     }
 
-    private baseValidate(password: string) {
-        if(password.length < 8) 
-            throw new UnprocessableEntityException("senha deve ter no mínimo 8 caracteres")
+    private validateUserFields(data: CreateUserDto): void {
+        RequiredFieldsValidator.validate(data, ["fullName", "cpfCnpj"])
+
+        if(!CpfCnpjValidator.validate(data.cpfCnpj))
+            throw new UnprocessableEntityException("CPF inválido")
     }
 
-    private validateUserFields(data: CreateUserDto): boolean {
-        this.baseValidate(data.password)
+    private validateCompanyFields(data: CreateUserDto): void {
+        RequiredFieldsValidator.validate(data, ["companyName", "tradeName", "cpfCnpj"])
 
-        if(!data.fullName || !data.cpfCnpj) 
-            throw new UnprocessableEntityException("Nome completo e CPF são obrigatórios para usuários")
-
-        return CpfCnpjValidator.validate(data.cpfCnpj)
-    }
-
-    private validateCompanyFields(data: CreateUserDto): boolean {
-        this.baseValidate(data.password)
-
-        if(!data.companyName || !data.tradeName || !data.cpfCnpj)
-            throw new UnprocessableEntityException("Nome da empresa, nome fantasia e CNPJ são obrigatórios para empresas")
-
-        return CpfCnpjValidator.validate(data.cpfCnpj)
+        if(!CpfCnpjValidator.validate(data.cpfCnpj))
+            throw new UnprocessableEntityException("CNPJ inválido")
     }
 }
