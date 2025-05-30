@@ -29,7 +29,7 @@ async function bootstrap() {
         .setDescription(packageJSON.description)
         .setContact(packageJSON.author, "", "economize.mais.app@gmail.com")
         .setVersion(packageJSON.version)
-        // .addBearerAuth()
+        .addBearerAuth()
         .setVersion(packageJSON.version)
         .build()
 

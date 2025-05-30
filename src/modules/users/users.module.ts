@@ -1,8 +1,10 @@
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 
+import { AuthModule } from "@/auth/infrastructure/auth.module"
 import { CommonModule } from "@/common/common.module"
 import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"
+import { SigninUseCase } from "./application/use-cases/signin.use-case"
 import { UpdatePasswordUseCase } from "./application/use-cases/update-password.use-case"
 import { User } from "@/modules/users/domain/entities/users.entity"
 import { UserController } from "./users.controller"
@@ -12,6 +14,7 @@ import { UserRepository } from "./infrastructure/repositories/users.repository"
 @Module({
     imports: [
         TypeOrmModule.forFeature([User]),
+        AuthModule,
         CommonModule
     ],
     controllers: [
@@ -19,6 +22,7 @@ import { UserRepository } from "./infrastructure/repositories/users.repository"
     ],
     providers: [
         CreateServiceUseCase,
+        SigninUseCase,
         UpdatePasswordUseCase,
         UserRepository,
         {
