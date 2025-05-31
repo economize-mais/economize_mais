@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 
+import { AddressDto } from "./address.dto"
 import { Gender } from "../../domain/enums/gender.enum"
 import { UserType } from "../../domain/enums/user-type.enum"
 
@@ -33,4 +34,7 @@ export class UserResponseDto {
 
     @ApiProperty({ example: "eyJhbGciOiJIUzI1NiIsInR5cCI6..." })
     accessToken?: string
+
+    @ApiProperty({ type: AddressDto, isArray: true })
+    addresses?: AddressDto[]
 }
