@@ -4,7 +4,7 @@ import {
     Repository 
 } from "typeorm"
 
-import { IBaseRepository } from "./interfaces/base-repository.interface"
+import { IBaseRepository } from "./base-repository.interface"
 
 export abstract class BaseRepository<T> implements IBaseRepository<T> {
     protected constructor(
