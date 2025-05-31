@@ -15,13 +15,14 @@ import {
 } from "@nestjs/swagger"
 
 import { AuthGuard } from "@/auth/infrastructure/auth.guard"
-import { AuthService } from "@/auth/infrastructure/auth.service"
 import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"
 import { CreateUserDto } from "./application/dto/create-user.dto"
+import { JwtPayload } from "@/auth/interfaces/jwt-payload.interface"
 import { SigninDto } from "./application/dto/signin.dto"
 import { SigninUseCase } from "./application/use-cases/signin.use-case"
 import { UpdatePasswordDto } from "./application/dto/update-password.dto"
 import { UpdatePasswordUseCase } from "./application/use-cases/update-password.use-case"
+import { User } from "@/common/decorators/user.decorator"
 import { UserResponseDto } from "./application/dto/create-user-response.dto"
 
 @Controller("/api/User")
@@ -29,7 +30,6 @@ import { UserResponseDto } from "./application/dto/create-user-response.dto"
 export class UserController {
 
     constructor(
-        private readonly authService: AuthService,
         private readonly create: CreateServiceUseCase,
         private readonly signinUseCase: SigninUseCase,
         private readonly updatePass: UpdatePasswordUseCase
@@ -51,9 +51,7 @@ export class UserController {
     @HttpCode(200)
     @Post("login")
     async login(@Body() signinDto: SigninDto) {
-        const output = await this.signinUseCase.execute(signinDto)
-        output.accessToken = await this.authService.generateJwt(output.id)
-        return output
+        return await this.signinUseCase.execute(signinDto)
     }
 
     @ApiBearerAuth()
@@ -62,11 +60,11 @@ export class UserController {
     @ApiResponse({ status: 404, description: "Id não encontrado" })
     @ApiResponse({ status: 422, description: "Corpo da requisição com dados inválidos" })
     @UseGuards(AuthGuard)
-    @Patch(":id")
+    @Patch("update-password")
     async updatePassword(
-        @Param("id") id: string,
+        @User() user: JwtPayload,
         @Body() updatePasswordDto: UpdatePasswordDto
     ) {
-        return await this.updatePass.execute(id, updatePasswordDto)
+        return await this.updatePass.execute(user.sub, updatePasswordDto)
     }
 }

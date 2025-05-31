@@ -9,6 +9,7 @@ import {
     IUserRepository, 
     USER_REPOSITORY 
 } from "../../domain/interfaces/user-repository.interface"
+import { AuthService } from "@/auth/infrastructure/auth.service"
 import { HashService } from "@/common/hash/hash.service"
 import { SigninDto } from "../dto/signin.dto"
 import { userToResponse } from "../presenter/user.presenter"
@@ -18,6 +19,7 @@ export class SigninUseCase {
     constructor(
         @Inject(USER_REPOSITORY)
         private readonly repo: IUserRepository,
+        private readonly authService: AuthService,
         private readonly hashProvider: HashService
     ) {}
 
@@ -32,6 +34,9 @@ export class SigninUseCase {
         if(!hashPasswordMatch)
             throw new BadRequestException("Senha está incorreto")
 
-        return userToResponse(user)
+        const output = userToResponse(user)
+        output.accessToken = await this.authService.generateJwt({ sub: user.id, email: user.email })
+
+        return output
     }
 }
