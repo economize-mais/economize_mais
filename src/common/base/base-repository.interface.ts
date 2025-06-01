@@ -4,9 +4,8 @@ import {
 } from "typeorm"
 
 export interface IBaseRepository<T> {
-    create<D extends DeepPartial<T>>(data: D): Promise<T> 
+    delete(id: string): Promise<void>
     find(): Promise<T[]> 
     findOne(options: FindOneOptions<T>): Promise<T | null> 
-    update(id: string, data: Partial<T>): Promise<T | null> 
-    delete(id: string): Promise<void>
+    save<D extends DeepPartial<T>>(data: D): Promise<T> 
 }

@@ -1,11 +1,13 @@
 import { 
-    Entity, 
-    PrimaryGeneratedColumn, 
     Column, 
     CreateDateColumn, 
+    Entity, 
+    OneToMany, 
+    PrimaryGeneratedColumn,
     UpdateDateColumn 
 } from "typeorm"
 
+import { Address } from "./addresses.entity"
 import { Gender } from "@/modules/users/domain/enums/gender.enum"
 import { UserType } from "@/modules/users/domain/enums/user-type.enum"
 
@@ -43,6 +45,9 @@ export class User {
 
     @Column({ name: "logo_url", nullable: true })
     logoUrl?: string
+
+    @OneToMany(() => Address, (address) => address.user, { eager: true })
+    addresses: Address[]
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date

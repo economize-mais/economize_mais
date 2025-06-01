@@ -7,16 +7,13 @@ import {
     IsString,
     Matches
 } from "class-validator"
-import { 
-    ApiProperty, 
-    OmitType 
-} from "@nestjs/swagger"
+import { ApiProperty } from "@nestjs/swagger"
 
 import { AddressDto } from "./address.dto"
 import { Gender } from "../../domain/enums/gender.enum"
 import { UserType } from "../../domain/enums/user-type.enum"
 
-export class CreateUserDto {
+export class UpdateUserDto {
     @ApiProperty({ example: "user@example.com" })
     @IsEmail()
     email: string
@@ -67,6 +64,6 @@ export class CreateUserDto {
     @IsString()
     logoUrl?: string
 
-    @ApiProperty({ type: OmitType(AddressDto, ["id"] as const), isArray: true })
+    @ApiProperty({ type: AddressDto, isArray: true })
     addresses?: AddressDto[]
 }

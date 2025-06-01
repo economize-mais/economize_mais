@@ -45,6 +45,6 @@ export class UpdatePasswordUseCase {
 
         const hashedNewPassword = await this.hashProvider.hash(updatePasswordDto.newPassword)
         user.password = hashedNewPassword
-        return userToResponse(await this.repo.update(id, user))   
+        return userToResponse(await this.repo.save(user))   
     }
 }
