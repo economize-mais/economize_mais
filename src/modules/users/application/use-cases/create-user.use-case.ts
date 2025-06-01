@@ -28,7 +28,7 @@ export class CreateServiceUseCase {
 
         const hashPassoword = await this.hashProvider.hash(data.password)
         const entity = { ...data, password: hashPassoword }
-        const user = await this.repo.create(entity)
+        const user = await this.repo.save(entity)
 
         return userToResponse(user)
     }
