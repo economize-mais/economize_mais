@@ -1,10 +1,10 @@
 import { ConfigService } from "@nestjs/config"
 import { Injectable } from "@nestjs/common"
 
-import { EnvConfig } from "./env-config.interface"
+import { IEnvConfig } from "./env-config.interface"
 
 @Injectable()
-export class EnvConfigService implements EnvConfig {
+export class EnvConfigService implements IEnvConfig {
 
     constructor(
         private configService: ConfigService
