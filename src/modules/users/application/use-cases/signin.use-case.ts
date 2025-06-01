@@ -6,25 +6,29 @@ import {
 } from "@nestjs/common"
 
 import { 
-    IUserRepository, 
-    USER_REPOSITORY 
-} from "../../domain/interfaces/user-repository.interface"
+    AUTH_SERVICE, 
+    IAuthService 
+} from "@/auth/infrastructure/interfaces/auth-service.interface"
 import { 
     HASH_SERVICE, 
     IHashService 
 } from "@/common/hash/interfaces/hash-service.interface"
-import { AuthService } from "@/auth/infrastructure/auth.service"
+import { 
+    IUserRepository, 
+    USER_REPOSITORY 
+} from "../../domain/interfaces/user-repository.interface"
 import { SigninDto } from "../dto/signin.dto"
 import { userToResponse } from "../presenter/user.presenter"
 
 @Injectable()
 export class SigninUseCase {
     constructor(
-        @Inject(USER_REPOSITORY)
-        private readonly repo: IUserRepository,
+        @Inject(AUTH_SERVICE)
+        private readonly authService: IAuthService,
         @Inject(HASH_SERVICE)
         private readonly hashProvider: IHashService,
-        private readonly authService: AuthService
+        @Inject(USER_REPOSITORY)
+        private readonly repo: IUserRepository
     ) {}
 
     async execute({ email, password }: SigninDto) {

@@ -2,16 +2,21 @@ import {
     Injectable,
     CanActivate,
     ExecutionContext,
-    UnauthorizedException
+    UnauthorizedException,
+    Inject
 } from "@nestjs/common"
 
-import { AuthService } from "./auth.service"
+import { 
+    AUTH_SERVICE, 
+    IAuthService 
+} from "./interfaces/auth-service.interface"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
     constructor(
-        private authService: AuthService
+        @Inject(AUTH_SERVICE)
+        private authService: IAuthService
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
