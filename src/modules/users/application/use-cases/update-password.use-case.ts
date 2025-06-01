@@ -10,7 +10,10 @@ import {
     IUserRepository, 
     USER_REPOSITORY 
 } from "../../domain/interfaces/user-repository.interface"
-import { HashService } from "@/common/hash/hash.service"
+import { 
+    HASH_SERVICE, 
+    IHashService 
+} from "@/common/hash/interfaces/hash-service.interface"
 import { PasswordValidator } from "../../domain/validators/password.validator"
 import { UpdatePasswordDto } from "../dto/update-password.dto"
 import { userToResponse } from "../presenter/user.presenter"
@@ -20,7 +23,8 @@ export class UpdatePasswordUseCase {
     constructor(
         @Inject(USER_REPOSITORY)
         private readonly repo: IUserRepository,
-        private readonly hashProvider: HashService
+        @Inject(HASH_SERVICE)
+        private readonly hashProvider: IHashService
     ) {}
 
     async execute(id: string, updatePasswordDto: UpdatePasswordDto) {

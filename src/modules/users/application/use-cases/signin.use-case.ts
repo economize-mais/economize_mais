@@ -9,8 +9,11 @@ import {
     IUserRepository, 
     USER_REPOSITORY 
 } from "../../domain/interfaces/user-repository.interface"
+import { 
+    HASH_SERVICE, 
+    IHashService 
+} from "@/common/hash/interfaces/hash-service.interface"
 import { AuthService } from "@/auth/infrastructure/auth.service"
-import { HashService } from "@/common/hash/hash.service"
 import { SigninDto } from "../dto/signin.dto"
 import { userToResponse } from "../presenter/user.presenter"
 
@@ -19,8 +22,9 @@ export class SigninUseCase {
     constructor(
         @Inject(USER_REPOSITORY)
         private readonly repo: IUserRepository,
-        private readonly authService: AuthService,
-        private readonly hashProvider: HashService
+        @Inject(HASH_SERVICE)
+        private readonly hashProvider: IHashService,
+        private readonly authService: AuthService
     ) {}
 
     async execute({ email, password }: SigninDto) {
