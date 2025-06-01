@@ -8,6 +8,7 @@ import {
     Module 
 } from "@nestjs/common"
 
+import { ENV_CONFIG } from "./interfaces/env-config.interface"
 import { EnvConfigService } from "./env-config.service"
 
 @Module({
@@ -15,10 +16,13 @@ import { EnvConfigService } from "./env-config.service"
         ConfigModule
     ],
     providers: [
-        EnvConfigService
+        {
+            provide: ENV_CONFIG,
+            useClass: EnvConfigService
+        }
     ],
     exports: [
-        EnvConfigService
+        ENV_CONFIG
     ]
 })
 

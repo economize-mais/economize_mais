@@ -1,4 +1,4 @@
-import { IBaseRepository } from "@/common/base/base-repository.interface"
+import { IBaseRepository } from "@/common/base/interfaces/base-repository.interface"
 import { User } from "@/modules/users/domain/entities/users.entity"
 
 export const USER_REPOSITORY = Symbol("USER_REPOSITORY")
