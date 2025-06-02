@@ -72,6 +72,10 @@ export class UserController {
     }
 
     @ApiBearerAuth()
+    @ApiResponse({ status: 200, type: UserResponseDto })
+    @ApiResponse({ status: 401, description: "Acesso não autorizado" })
+    @ApiResponse({ status: 404, description: "Id não encontrado" })
+    @ApiResponse({ status: 422, description: "corpo da requisicao com dados inválidos"})
     @UseGuards(AuthGuard)
     @Put()
     async update(
