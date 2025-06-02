@@ -3,9 +3,9 @@ import {
     Controller, 
     HttpCode, 
     HttpStatus, 
-    Param, 
     Patch, 
     Post, 
+    Put, 
     UseGuards
 } from "@nestjs/common"
 import { 
@@ -22,8 +22,10 @@ import { SigninDto } from "./application/dto/signin.dto"
 import { SigninUseCase } from "./application/use-cases/signin.use-case"
 import { UpdatePasswordDto } from "./application/dto/update-password.dto"
 import { UpdatePasswordUseCase } from "./application/use-cases/update-password.use-case"
+import { UpdateUserDto } from "./application/dto/update-user.dto"
+import { UpdateUserUseCase } from "./application/use-cases/update-user.use-case"
 import { User } from "@/common/decorators/user.decorator"
-import { UserResponseDto } from "./application/dto/create-user-response.dto"
+import { UserResponseDto } from "./application/dto/user-response.dto"
 
 @Controller("/api/User")
 @ApiTags("User routes")
@@ -32,7 +34,8 @@ export class UserController {
     constructor(
         private readonly create: CreateServiceUseCase,
         private readonly signinUseCase: SigninUseCase,
-        private readonly updatePass: UpdatePasswordUseCase
+        private readonly updatePass: UpdatePasswordUseCase,
+        private readonly updateUser: UpdateUserUseCase
     ) {}
 
     @ApiResponse({ status: 201, type: UserResponseDto })
@@ -66,5 +69,15 @@ export class UserController {
         @Body() updatePasswordDto: UpdatePasswordDto
     ) {
         return await this.updatePass.execute(user.sub, updatePasswordDto)
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
+    @Put()
+    async update(
+        @User() user: JwtPayload,
+        @Body() updateUserdto: UpdateUserDto
+    ) {
+        return await this.updateUser.execute(user.sub, updateUserdto)
     }
 }
