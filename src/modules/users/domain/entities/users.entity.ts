@@ -13,6 +13,7 @@ import { UserType } from "@/modules/users/domain/enums/user-type.enum"
 
 @Entity("users")
 export class User {
+    
     @PrimaryGeneratedColumn("uuid")
     id: string
 
@@ -46,7 +47,7 @@ export class User {
     @Column({ name: "logo_url", nullable: true })
     logoUrl?: string
 
-    @OneToMany(() => Address, (address) => address.user, { eager: true })
+    @OneToMany(() => Address, (address) => address.user, { eager: true, cascade: true })
     addresses: Address[]
 
     @CreateDateColumn({ name: "created_at" })

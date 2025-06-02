@@ -21,7 +21,42 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,
-        transform: true
+        transform: true,
+        exceptionFactory: (errors) => {
+            for (const error of errors) {
+                if (error.constraints) {
+                    const firstError = Object.values(error.constraints)[0]
+                    return {
+                        statusCode: 400,
+                        error: "Bad Request",
+                        message: firstError
+                    }
+                }
+
+                if (error.children?.length) {
+                    for (const child of error.children) {
+                        for (const grandChild of child.children || []) {
+                            const constraints = grandChild.constraints
+                            if (constraints) {
+                                const prop = error.property
+                                const msg = Object.values(constraints)[0]
+                                return {
+                                    statusCode: 400,
+                                    error: "Bad Request",
+                                    message: `${prop}: ${msg}`
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return {
+                statusCode: 400,
+                error: "Bad Request",
+                message: "Erro de validação"
+            }
+        }
     }))
 
     const config = new DocumentBuilder()

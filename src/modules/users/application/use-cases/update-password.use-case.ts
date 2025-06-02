@@ -4,29 +4,30 @@ import {
     NotFoundException, 
     UnprocessableEntityException
 } from "@nestjs/common"
-import { validate as isUuid } from "uuid"
 
+import { 
+    HASH_SERVICE, 
+    IHashService 
+} from "@/common/hash/interfaces/hash-service.interface"
 import { 
     IUserRepository, 
     USER_REPOSITORY 
 } from "../../domain/interfaces/user-repository.interface"
-import { HashService } from "@/common/hash/hash.service"
 import { PasswordValidator } from "../../domain/validators/password.validator"
 import { UpdatePasswordDto } from "../dto/update-password.dto"
 import { userToResponse } from "../presenter/user.presenter"
 
 @Injectable()
 export class UpdatePasswordUseCase {
+    
     constructor(
+        @Inject(HASH_SERVICE)
+        private readonly hashProvider: IHashService,
         @Inject(USER_REPOSITORY)
-        private readonly repo: IUserRepository,
-        private readonly hashProvider: HashService
+        private readonly repo: IUserRepository
     ) {}
 
     async execute(id: string, updatePasswordDto: UpdatePasswordDto) {
-
-        if (!isUuid(id))
-            throw new UnprocessableEntityException("ID inválido")
 
         const user = await this.repo.findOne({ where: { id } })
 

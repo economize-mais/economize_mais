@@ -1,7 +1,9 @@
 import { JwtModule } from "@nestjs/jwt"
 import { Module } from "@nestjs/common"
 
+import { AUTH_SERVICE } from "./interfaces/auth-service.interface"
 import { AuthService } from "./auth.service"
+import { ENV_CONFIG } from "@/common/env-config/interfaces/env-config.interface"
 import { EnvConfigModule } from "@/common/env-config/env-config.module"
 import { EnvConfigService } from "@/common/env-config/env-config.service"
 
@@ -19,14 +21,19 @@ import { EnvConfigService } from "@/common/env-config/env-config.service"
                     expiresIn: config.getJwtExpiresInSeconds()
                 }
             }),
-            inject: [EnvConfigService]
+            inject: [
+                ENV_CONFIG
+            ]
         })
     ],
     providers: [
-        AuthService
+        {
+            provide: AUTH_SERVICE,
+            useClass: AuthService
+        }
     ],
     exports: [
-        AuthService
+        AUTH_SERVICE
     ]
 })
 

@@ -1,27 +1,27 @@
 import {
+    IsArray,
     IsDateString,
     IsEmail,
     IsEnum,
-    IsNotEmpty,
     IsOptional,
     IsString,
-    Matches
+    Matches,
+    ValidateNested
 } from "class-validator"
 import { ApiProperty } from "@nestjs/swagger"
 
 import { AddressDto } from "./address.dto"
 import { Gender } from "../../domain/enums/gender.enum"
 import { UserType } from "../../domain/enums/user-type.enum"
+import { Type } from "class-transformer"
 
 export class UpdateUserDto {
+
+    id?: string
+    
     @ApiProperty({ example: "user@example.com" })
     @IsEmail()
     email: string
-
-    @ApiProperty({ example: "strongPassword123" })
-    @IsString()
-    @IsNotEmpty()
-    password: string
 
     @ApiProperty({ example: "John Doe", required: false })
     @IsOptional()
@@ -65,5 +65,9 @@ export class UpdateUserDto {
     logoUrl?: string
 
     @ApiProperty({ type: AddressDto, isArray: true })
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => AddressDto)
     addresses?: AddressDto[]
 }

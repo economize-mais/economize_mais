@@ -1,5 +1,8 @@
+import { plainToInstance } from "class-transformer"
+
+import { AddressDto } from "../dto/address.dto"
 import { User } from "@/modules/users/domain/entities/users.entity"
-import { UserResponseDto } from "@/modules/users/application/dto/create-user-response.dto"
+import { UserResponseDto } from "@/modules/users/application/dto/user-response.dto"
 
 export const userToResponse = (user: User): UserResponseDto => {
     const base = {
@@ -7,7 +10,8 @@ export const userToResponse = (user: User): UserResponseDto => {
         email: user.email,
         fullName: user.fullName,
         userType: user.userType,
-        birthDate: user.birthDate
+        birthDate: user.birthDate,
+        addresses: plainToInstance(AddressDto, user.addresses, { excludeExtraneousValues: true })
     } as UserResponseDto
 
     if (user.userType === "USER")
