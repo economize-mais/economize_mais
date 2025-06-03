@@ -12,7 +12,14 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    ssl: false,
+    extra: process.env.DATABASE_SSL === "true"
+        ? {
+            ssl: { rejectUnauthorized: false },
+            sslmode: "require"
+        }
+        : {
+            ssl: false
+        },
     migrations: [path.resolve(__dirname, "../infra/database/migrations/*{.js,.ts}")],
     synchronize: false
 })

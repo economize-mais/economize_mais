@@ -13,7 +13,14 @@ import * as path from "path"
             username: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: process.env.DB_NAME,
-            ssl: false,
+            extra: process.env.DATABASE_SSL === "true"
+                ? {
+                    ssl: { rejectUnauthorized: false },
+                    sslmode: "require"
+                }
+                : {
+                    ssl: false
+                },
             entities: [path.resolve(__dirname, "../../modules/**/domain/entities/*.entity{.ts,.js}")],
             synchronize: false
         })
