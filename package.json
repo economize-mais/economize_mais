@@ -1,6 +1,6 @@
 {
   "name": "economize_mais",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Apis do aplicativo Economize Mais",
   "author": "Economize Mais",
   "private": true,
@@ -11,7 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:create": "ts-node src/config/create-migrations.ts",
     "migration:run": "npm run typeorm migration:run -- -d src/config/typeorm.config.ts",
