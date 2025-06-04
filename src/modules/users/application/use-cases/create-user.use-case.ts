@@ -38,6 +38,6 @@ export class CreateServiceUseCase {
         
         const user = await this.repo.save(entity)
 
-        return userToResponse(user)
+        return userToResponse(user, { usage: false, privacy: false })
     }
 }

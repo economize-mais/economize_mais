@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger"
 
 import { AddressDto } from "./address.dto"
 import { Gender } from "../../domain/enums/gender.enum"
+import { TermsAcceptance } from "./terms-acceptance.dto"
 import { UserType } from "../../domain/enums/user-type.enum"
 
 export class UserResponseDto {
@@ -38,4 +39,7 @@ export class UserResponseDto {
 
     @ApiProperty({ type: AddressDto, isArray: true })
     addresses?: AddressDto[]
+
+    @ApiProperty({ type: TermsAcceptance })
+    termsAcceptance: TermsAcceptance
 }

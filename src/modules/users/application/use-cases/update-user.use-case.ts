@@ -31,6 +31,6 @@ export class UpdateUserUseCase {
 
         data.id = id
 
-        return userToResponse(await this.repo.save(data))
+        return userToResponse(await this.repo.save(data), { usage: true, privacy: true })
     }
 }
