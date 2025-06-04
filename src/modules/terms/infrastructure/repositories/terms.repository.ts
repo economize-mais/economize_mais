@@ -23,6 +23,6 @@ export class TermsRepository extends BaseRepository<Terms> implements ITermsRepo
                 createdAt: "DESC"
             }
         })
-        .then(res => { return !!res.acceptTerms.find(x => x.userId === userId) })
+        .then(res => { return !!res?.acceptTerms.find(x => x.userId === userId) })
     }
 }
