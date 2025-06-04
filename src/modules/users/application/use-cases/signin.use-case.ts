@@ -14,6 +14,10 @@ import {
     IHashService 
 } from "@/common/hash/interfaces/hash-service.interface"
 import { 
+    ITermsRepository, 
+    TERMS_REPOSITORY 
+} from "@/modules/terms/domain/interfaces/terms-repository.interface"
+import { 
     IUserRepository, 
     USER_REPOSITORY 
 } from "../../domain/interfaces/user-repository.interface"
@@ -28,6 +32,8 @@ export class SigninUseCase {
         private readonly authService: IAuthService,
         @Inject(HASH_SERVICE)
         private readonly hashProvider: IHashService,
+        @Inject(TERMS_REPOSITORY)
+        private readonly terms: ITermsRepository,
         @Inject(USER_REPOSITORY)
         private readonly repo: IUserRepository
     ) {}
@@ -43,7 +49,10 @@ export class SigninUseCase {
         if(!hashPasswordMatch)
             throw new BadRequestException("Senha está incorreto")
 
-        const output = userToResponse(user)
+        const usage = await this.terms.findLatestByType("USAGE", user.id)
+        const privacy = await this.terms.findLatestByType("PRIVACY", user.id)
+
+        const output = userToResponse(user, { usage, privacy })
         output.accessToken = await this.authService.generateJwt({ sub: user.id, email: user.email })
 
         return output

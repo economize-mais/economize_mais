@@ -9,6 +9,7 @@ import {
 
 import { Address } from "./addresses.entity"
 import { Gender } from "@/modules/users/domain/enums/gender.enum"
+import { UserTermsAcceptance } from "@/modules/terms/domain/entities/user-terms-acceptance.entity"
 import { UserType } from "@/modules/users/domain/enums/user-type.enum"
 
 @Entity("users")
@@ -49,6 +50,9 @@ export class User {
 
     @OneToMany(() => Address, (address) => address.user, { eager: true, cascade: true })
     addresses: Address[]
+
+    @OneToMany(() => UserTermsAcceptance, (terms) => terms.user, { eager: true, cascade: true })
+    terms: UserTermsAcceptance[]
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date
