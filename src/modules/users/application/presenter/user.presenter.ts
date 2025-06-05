@@ -16,6 +16,7 @@ export const userToResponse = (user: User, terms: Terms): UserResponseDto => {
         fullName: user.fullName,
         userType: user.userType,
         birthDate: user.birthDate,
+        gender: user.gender,
         addresses: plainToInstance(AddressDto, user.addresses, { excludeExtraneousValues: true }),
         termsAcceptance: terms
     } as UserResponseDto
@@ -25,7 +26,6 @@ export const userToResponse = (user: User, terms: Terms): UserResponseDto => {
 
     return {
         ...base,
-        gender: user.gender,
         companyName: user.companyName,
         tradeName: user.tradeName,
         logoUrl: user.logoUrl
