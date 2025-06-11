@@ -16,6 +16,15 @@ export class TermsRepository extends BaseRepository<Terms> implements ITermsRepo
         super(repo)
     }
 
+    async findByType(type: "USAGE" | "PRIVACY"): Promise<Terms> {
+        return await this.repo.findOne({
+            where: { type },
+            order: {
+                createdAt: "DESC"
+            }
+        })
+    }
+
     async findLatestByType(type: "USAGE" | "PRIVACY", userId: string): Promise<boolean> {
         return await this.repo.findOne({ 
             where: { type },
