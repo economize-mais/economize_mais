@@ -47,7 +47,7 @@ export class SigninUseCase {
         const hashPasswordMatch = await this.hashProvider.compare(password, user.password)
 
         if(!hashPasswordMatch)
-            throw new BadRequestException("Senha está incorreto")
+            throw new BadRequestException("Senha está incorreta")
 
         const usage = await this.terms.findLatestByType("USAGE", user.id)
         const privacy = await this.terms.findLatestByType("PRIVACY", user.id)
