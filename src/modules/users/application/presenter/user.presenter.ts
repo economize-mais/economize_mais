@@ -14,6 +14,8 @@ export const userToResponse = (user: User, terms: Terms): UserResponseDto => {
         id: user.id,
         email: user.email,
         fullName: user.fullName,
+        cpfCnpj: user.cpfCnpj,
+        phone: user.phone,
         userType: user.userType,
         birthDate: user.birthDate,
         gender: user.gender,
