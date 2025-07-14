@@ -7,6 +7,7 @@ import {
     IsOptional,
     IsString,
     Matches,
+    MaxLength,
     ValidateNested
 } from "class-validator"
 import { 
@@ -41,6 +42,11 @@ export class CreateUserDto {
         message: "CPF/CNPJ must have between 11 and 14 digits"
     })
     cpfCnpj: string
+
+    @ApiProperty({ example: "(35)99942-1613", maxLength: 20 })
+    @IsString()
+    @MaxLength(20, { message: "O telefone deve ter no máximo 20 caracteres"})
+    phone: string
 
     @ApiProperty({ example: "1990-01-01", required: false })
     @IsOptional()

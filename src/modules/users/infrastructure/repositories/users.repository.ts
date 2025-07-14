@@ -20,4 +20,9 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
         const user = await this.repo.findOne({ where: { email } })
         return !!user
     }
+
+    async isCpfCnpjTaken(cpfCnpj: any): Promise<boolean> {
+        const user = await this.repo.findOne({ where: { cpfCnpj } })
+        return !!user
+    }
 }

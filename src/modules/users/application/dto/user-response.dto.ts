@@ -16,6 +16,12 @@ export class UserResponseDto {
     @ApiProperty({ example: "John Doe", required: false })
     fullName?: string
 
+    @ApiProperty({ example: "12345678901" })
+    cpfCnpj: string
+
+    @ApiProperty({ example: "(35)99942-1613", maxLength: 20 })
+    phone?: string
+
     @ApiProperty({ enum: UserType })
     userType: UserType
 

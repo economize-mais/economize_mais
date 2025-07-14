@@ -48,6 +48,9 @@ export class User {
     @Column({ name: "logo_url", nullable: true })
     logoUrl?: string
 
+    @Column({ type: "varchar", length: 20, nullable: false })
+    phone: string
+
     @OneToMany(() => Address, (address) => address.user, { eager: true, cascade: true })
     addresses: Address[]
 
