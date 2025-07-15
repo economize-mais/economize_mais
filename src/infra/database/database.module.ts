@@ -22,7 +22,8 @@ import * as path from "path"
                     ssl: false
                 },
             entities: [path.resolve(__dirname, "../../modules/**/domain/entities/*.entity{.ts,.js}")],
-            synchronize: false
+            synchronize: false,
+            logging: true
         })
     ]
 })
