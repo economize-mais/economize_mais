@@ -64,21 +64,6 @@ export class CreateUserDto {
     @IsEnum(UserType)
     userType: UserType
 
-    @ApiProperty({ example: "Supermercado Bom Preço", required: false })
-    @IsOptional()
-    @IsString()
-    companyName?: string
-
-    @ApiProperty({ example: "Bom Preço", required: false })
-    @IsOptional()
-    @IsString()
-    tradeName?: string
-
-    @ApiProperty({ example: "https://example.com/logo.png", required: false })
-    @IsOptional()
-    @IsString()
-    logoUrl?: string
-
     @ApiProperty({ type: OmitType(AddressDto, ["id"] as const), isArray: true })
     @IsOptional()
     @IsArray()
