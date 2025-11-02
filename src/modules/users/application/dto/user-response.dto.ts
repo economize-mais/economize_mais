@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger"
 
 import { AddressDto } from "./address.dto"
-import { Gender } from "../../domain/enums/gender.enum"
 import { TermsAcceptance } from "./terms-acceptance.dto"
+
+import { Gender } from "../../domain/enums/gender.enum"
 import { UserType } from "../../domain/enums/user-type.enum"
 
 export class UserResponseDto {
-    
     @ApiProperty({ example: "d290f1ee-6c54-4b01-90e6-d701748f0851" })
     id: string
 
@@ -48,4 +48,7 @@ export class UserResponseDto {
 
     @ApiProperty({ type: TermsAcceptance })
     termsAcceptance: TermsAcceptance
+
+    @ApiProperty({ example: "false" })
+    originAcceptance: boolean
 }
