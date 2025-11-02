@@ -16,6 +16,8 @@ export class GetOriginUseCase {
 
     async execute() {
         const results = await this.origin.find()
-        return results.map((result) => originToResponse(result))
+        return results
+            .filter((result) => result.status)
+            .map((result) => originToResponse(result))
     }
 }
