@@ -8,11 +8,11 @@ import {
     UpdateDateColumn
 } from "typeorm"
 
+import { Establishment } from "./establishment.entity"
 import { User } from "./users.entity"
 
 @Entity("addresses")
 export class Address {
-    
     @PrimaryGeneratedColumn("uuid")
     id: string
 
@@ -37,9 +37,24 @@ export class Address {
     @Column({ type: "varchar", length: 10 })
     zipcode: string
 
-    @ManyToOne(() => User, user => user.addresses, { orphanedRowAction: "delete" })
+    @Column({ type: "uuid", nullable: true })
+    user_id?: string
+
+    @ManyToOne(() => User, (user) => user.addresses, {
+        orphanedRowAction: "delete"
+    })
     @JoinColumn({ name: "user_id" })
     user: User
+
+    @Column({ type: "uuid", nullable: true })
+    establishment_id?: string
+
+    @ManyToOne(() => Establishment, (est) => est.addresses, {
+        orphanedRowAction: "delete",
+        nullable: true
+    })
+    @JoinColumn({ name: "establishment_id" })
+    establishment?: Establishment
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date
