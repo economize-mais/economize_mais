@@ -45,6 +45,6 @@ export class TermsController {
     @UseGuards(AuthGuard)
     @Post("accept")
     async acceptTerm(@User() user: JwtPayload, @Body() term: AcceptTermDto) {
-        return await this.accept.execute(user.sub, term.id)
+        return await this.accept.execute(user.type, user.sub, term.id)
     }
 }

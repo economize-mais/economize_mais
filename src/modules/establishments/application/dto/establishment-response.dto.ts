@@ -37,4 +37,7 @@ export class EstablishmentResponseDto {
 
     @ApiProperty({ type: TermsAcceptance })
     termsAcceptance: TermsAcceptance
+
+    @ApiProperty({ example: "true" })
+    originAcceptance: boolean
 }

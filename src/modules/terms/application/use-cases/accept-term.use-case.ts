@@ -1,5 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common"
 
+import { UserType } from "@/modules/shared/enums/user-type.enum"
+
 import {
     ITermsRepository,
     TERMS_REPOSITORY
@@ -18,21 +20,30 @@ export class AcceptTermUseCase {
         private readonly userTerms: IUserTermsAcceptanceRepository
     ) {}
 
-    async execute(userId: string, termsId: number) {
-        const document = await this.terms.findOne({ where: { id: termsId } })
+    async execute(type: string, id: string, terms_id: number) {
+        const document = await this.terms.findOne({ where: { id: terms_id } })
 
         if (!document) throw new NotFoundException(`Documento não encontrado`)
 
+        const user_id = type === UserType.USER ? id : null
+        const establishment_id = type === UserType.COMPANY ? id : null
+
         if (
             await this.userTerms.findOne({
-                where: { user_id: userId, terms_id: termsId }
+                where: { user_id, establishment_id, terms_id: terms_id }
             })
         )
             return {
                 message: "Termo já está aceito"
             }
 
-        if (await this.userTerms.save({ user_id: userId, terms_id: termsId }))
+        if (
+            await this.userTerms.save({
+                user_id,
+                establishment_id,
+                terms_id
+            })
+        )
             return {
                 message: "Termo aceito com sucesso"
             }
