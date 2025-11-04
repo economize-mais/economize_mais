@@ -14,8 +14,9 @@ import { AuthGuard } from "@/auth/infrastructure/auth.guard"
 import { JwtPayload } from "@/auth/infrastructure/interfaces/jwt-payload.interface"
 import { User } from "@/common/decorators/user.decorator"
 
+import { UpdatePasswordDto } from "../shared/dto/update-password.dto"
+
 import { CreateUserDto } from "./application/dto/create-user.dto"
-import { UpdatePasswordDto } from "./application/dto/update-password.dto"
 import { UpdateUserDto } from "./application/dto/update-user.dto"
 import { UserResponseDto } from "./application/dto/user-response.dto"
 import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"

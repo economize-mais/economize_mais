@@ -9,6 +9,8 @@ import {
     HASH_SERVICE,
     IHashService
 } from "@/common/hash/interfaces/hash-service.interface"
+
+import { UpdatePasswordDto } from "@/modules/shared/dto/update-password.dto"
 import { PasswordValidator } from "@/modules/shared/validator/password.validator"
 
 import {
@@ -16,7 +18,6 @@ import {
     USER_REPOSITORY
 } from "../../domain/interfaces/user-repository.interface"
 
-import { UpdatePasswordDto } from "../dto/update-password.dto"
 import { userToResponse } from "../presenter/user.presenter"
 
 @Injectable()
