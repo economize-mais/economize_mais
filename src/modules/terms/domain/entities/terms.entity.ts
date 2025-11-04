@@ -26,11 +26,11 @@ export class Terms {
     @Column({ name: "content_html", type: "text" })
     contentHtml: string
 
+    @CreateDateColumn({ name: "created_at", type: "timestamp" })
+    createdAt: Date
+
     @OneToMany(() => UserTermsAcceptance, (termsAccept) => termsAccept.terms, {
         cascade: true
     })
     acceptTerms: UserTermsAcceptance[]
-
-    @CreateDateColumn({ name: "created_at", type: "timestamp" })
-    createdAt: Date
 }

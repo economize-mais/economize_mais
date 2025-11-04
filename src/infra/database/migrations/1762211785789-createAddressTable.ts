@@ -1,12 +1,11 @@
-import { 
-    MigrationInterface, 
-    QueryRunner, 
+import {
+    MigrationInterface,
+    QueryRunner,
     Table,
     TableForeignKey
 } from "typeorm"
 
-export class UserAddressTable1748706554465 implements MigrationInterface {
-
+export class CreateAddressTable1762211785789 implements MigrationInterface {
     private tableName: string = "addresses"
 
     public async up(queryRunner: QueryRunner): Promise<void> {
@@ -25,7 +24,12 @@ export class UserAddressTable1748706554465 implements MigrationInterface {
                     {
                         name: "user_id",
                         type: "uuid",
-                        isNullable: false
+                        isNullable: true
+                    },
+                    {
+                        name: "establishment_id",
+                        type: "uuid",
+                        isNullable: true
                     },
                     {
                         name: "street",
@@ -75,7 +79,8 @@ export class UserAddressTable1748706554465 implements MigrationInterface {
                         default: "now()"
                     }
                 ]
-            })
+            }),
+            true
         )
 
         await queryRunner.createForeignKey(
@@ -88,15 +93,39 @@ export class UserAddressTable1748706554465 implements MigrationInterface {
                 onUpdate: "CASCADE"
             })
         )
+
+        await queryRunner.createForeignKey(
+            this.tableName,
+            new TableForeignKey({
+                columnNames: ["establishment_id"],
+                referencedColumnNames: ["id"],
+                referencedTableName: "establishments",
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
+            })
+        )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         const table = await queryRunner.getTable(this.tableName)
-        const foreignKey = table.foreignKeys.find((fk) => fk.columnNames.indexOf("user_id") !== -1)
 
-        if (foreignKey)
-            await queryRunner.dropForeignKey(this.tableName, foreignKey)
+        if (table) {
+            const userFk = table.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("user_id") !== -1
+            )
+            const establishmentFk = table.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("establishment_id") !== -1
+            )
 
-        await queryRunner.dropTable(this.tableName)
+            if (userFk) await queryRunner.dropForeignKey(this.tableName, userFk)
+
+            if (establishmentFk)
+                await queryRunner.dropForeignKey(
+                    this.tableName,
+                    establishmentFk
+                )
+        }
+
+        await queryRunner.dropTable(this.tableName, true)
     }
 }

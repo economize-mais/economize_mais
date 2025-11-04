@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 
 export class TermsAcceptance {
-
     @ApiProperty({ example: "true" })
     usage: boolean
 

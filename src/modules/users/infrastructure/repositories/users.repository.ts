@@ -3,12 +3,14 @@ import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
 import { BaseRepository } from "@/common/base/base.repository"
-import { IUserRepository } from "../../domain/interfaces/user-repository.interface"
 import { User } from "@/modules/users/domain/entities/users.entity"
+import { IUserRepository } from "../../domain/interfaces/user-repository.interface"
 
 @Injectable()
-export class UserRepository extends BaseRepository<User> implements IUserRepository {
-
+export class UserRepository
+    extends BaseRepository<User>
+    implements IUserRepository
+{
     constructor(
         @InjectRepository(User)
         private readonly repo: Repository<User>
@@ -21,8 +23,8 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
         return !!user
     }
 
-    async isCpfCnpjTaken(cpfCnpj: any): Promise<boolean> {
-        const user = await this.repo.findOne({ where: { cpfCnpj } })
+    async isCpfCnpjTaken(cpf: any): Promise<boolean> {
+        const user = await this.repo.findOne({ where: { cpf } })
         return !!user
     }
 }

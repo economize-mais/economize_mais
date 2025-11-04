@@ -5,7 +5,7 @@ import {
     TableForeignKey
 } from "typeorm"
 
-export class UserOriginTable1762035073520 implements MigrationInterface {
+export class CreateOriginTable1762212800757 implements MigrationInterface {
     private userOriginTable: string = "user_origin"
     private originTable: string = "origin"
     private userTable: string = "users"
@@ -37,7 +37,8 @@ export class UserOriginTable1762035073520 implements MigrationInterface {
                         default: "CURRENT_TIMESTAMP"
                     }
                 ]
-            })
+            }),
+            true
         )
 
         await queryRunner.createTable(
@@ -65,7 +66,8 @@ export class UserOriginTable1762035073520 implements MigrationInterface {
                         default: "CURRENT_TIMESTAMP"
                     }
                 ]
-            })
+            }),
+            true
         )
 
         await queryRunner.createForeignKey(
@@ -74,7 +76,8 @@ export class UserOriginTable1762035073520 implements MigrationInterface {
                 columnNames: ["user_id"],
                 referencedColumnNames: ["id"],
                 referencedTableName: this.userTable,
-                onDelete: "CASCADE"
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
             })
         )
 
@@ -84,12 +87,30 @@ export class UserOriginTable1762035073520 implements MigrationInterface {
                 columnNames: ["origin_id"],
                 referencedColumnNames: ["id"],
                 referencedTableName: this.originTable,
-                onDelete: "CASCADE"
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        const userOriginTable = await queryRunner.getTable(this.userOriginTable)
+
+        if (userOriginTable) {
+            const userFk = userOriginTable.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("user_id") !== -1
+            )
+            const originFk = userOriginTable.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("origin_id") !== -1
+            )
+
+            if (userFk)
+                await queryRunner.dropForeignKey(this.userOriginTable, userFk)
+
+            if (originFk)
+                await queryRunner.dropForeignKey(this.userOriginTable, originFk)
+        }
+
         await queryRunner.dropTable(this.userOriginTable)
         await queryRunner.dropTable(this.originTable)
     }

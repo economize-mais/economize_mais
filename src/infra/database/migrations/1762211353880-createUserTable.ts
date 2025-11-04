@@ -1,15 +1,9 @@
-import { 
-    MigrationInterface, 
-    QueryRunner, 
-    Table
-} from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm"
 
-export class UserTable1748201585832 implements MigrationInterface {
-
+export class CreateUserTable1762211353880 implements MigrationInterface {
     private tableName: string = "users"
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-
         await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`)
 
         await queryRunner.createTable(
@@ -25,6 +19,17 @@ export class UserTable1748201585832 implements MigrationInterface {
                         default: "uuid_generate_v4()"
                     },
                     {
+                        name: "type",
+                        type: "varchar",
+                        isNullable: false,
+                        comment: "'USER' for normal users"
+                    },
+                    {
+                        name: "name",
+                        type: "varchar",
+                        isNullable: false
+                    },
+                    {
                         name: "email",
                         type: "varchar",
                         isNullable: false,
@@ -36,16 +41,18 @@ export class UserTable1748201585832 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: "full_name",
+                        name: "cpf",
                         type: "varchar",
-                        isNullable: true
+                        length: "14",
+                        isNullable: false,
+                        isUnique: true
                     },
                     {
-                        name: "cpf_cnpj",
+                        name: "phone",
                         type: "varchar",
                         length: "20",
                         isNullable: false,
-                        isUnique: true
+                        default: "'(35)99999-9999'"
                     },
                     {
                         name: "birth_date",
@@ -60,30 +67,6 @@ export class UserTable1748201585832 implements MigrationInterface {
                         comment: "M = Male, F = Female"
                     },
                     {
-                        name: "user_type",
-                        type: "varchar",
-                        isNullable: false,
-                        comment: "'USER' for normal users, 'COMPANY' for supermarkets"
-                    },
-                    {
-                        name: "company_name",
-                        type: "varchar",
-                        isNullable: true,
-                        comment: "Legal name of the company"
-                    },
-                    {
-                        name: "trade_name",
-                        type: "varchar",
-                        isNullable: true,
-                        comment: "Trading name of the company"
-                    },
-                    {
-                        name: "logo_url",
-                        type: "varchar",
-                        isNullable: true,
-                        comment: "URL of the company's logo"
-                    },
-                    {
                         name: "created_at",
                         type: "timestamp",
                         default: "now()"
@@ -96,9 +79,28 @@ export class UserTable1748201585832 implements MigrationInterface {
                 ]
             })
         )
+
+        await queryRunner.createIndex(
+            this.tableName,
+            new TableIndex({
+                name: "IDX_users_email",
+                columnNames: ["email"]
+            })
+        )
+
+        await queryRunner.createIndex(
+            this.tableName,
+            new TableIndex({
+                name: "IDX_users_cpf",
+                columnNames: ["cpf"]
+            })
+        )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropIndex(this.tableName, "IDX_users_cpf")
+        await queryRunner.dropIndex(this.tableName, "IDX_users_email")
+
         await queryRunner.dropTable(this.tableName)
     }
 }

@@ -1,13 +1,13 @@
-import { 
-    MigrationInterface, 
-    QueryRunner, 
-    Table, 
-    TableForeignKey 
+import {
+    MigrationInterface,
+    QueryRunner,
+    Table,
+    TableForeignKey
 } from "typeorm"
 
-export class CreateTermsTable1748995395599 implements MigrationInterface {
-
+export class CreateTermsTable1762211996047 implements MigrationInterface {
     private acceptTermsTable: string = "user_terms_acceptance"
+    private establishmentsTable: string = "establishments"
     private termsTable: string = "terms"
     private userTable: string = "users"
 
@@ -19,23 +19,24 @@ export class CreateTermsTable1748995395599 implements MigrationInterface {
                     {
                         name: "id",
                         type: "serial",
-                        isPrimary: true,
+                        isPrimary: true
                     },
                     {
                         name: "version",
                         type: "varchar",
-                        isNullable: false,
+                        isNullable: false
                     },
                     {
                         name: "type",
                         type: "varchar",
                         isNullable: false,
-                        comment: "'USAGE' para Termos de Uso, 'PRIVACY' para Política de Privacidade",
+                        comment:
+                            "'USAGE' para Termos de Uso, 'PRIVACY' para Política de Privacidade"
                     },
                     {
                         name: "content_html",
                         type: "text",
-                        isNullable: false,
+                        isNullable: false
                     },
                     {
                         name: "created_at",
@@ -43,7 +44,8 @@ export class CreateTermsTable1748995395599 implements MigrationInterface {
                         default: "CURRENT_TIMESTAMP"
                     }
                 ]
-            })
+            }),
+            true
         )
 
         await queryRunner.createTable(
@@ -53,17 +55,22 @@ export class CreateTermsTable1748995395599 implements MigrationInterface {
                     {
                         name: "id",
                         type: "serial",
-                        isPrimary: true,
+                        isPrimary: true
                     },
                     {
                         name: "user_id",
                         type: "uuid",
-                        isNullable: false,
+                        isNullable: true
+                    },
+                    {
+                        name: "establishment_id",
+                        type: "uuid",
+                        isNullable: true
                     },
                     {
                         name: "terms_id",
                         type: "integer",
-                        isNullable: false,
+                        isNullable: false
                     },
                     {
                         name: "accepted_at",
@@ -71,7 +78,8 @@ export class CreateTermsTable1748995395599 implements MigrationInterface {
                         default: "CURRENT_TIMESTAMP"
                     }
                 ]
-            })
+            }),
+            true
         )
 
         await queryRunner.createForeignKey(
@@ -80,23 +88,62 @@ export class CreateTermsTable1748995395599 implements MigrationInterface {
                 columnNames: ["user_id"],
                 referencedColumnNames: ["id"],
                 referencedTableName: this.userTable,
-                onDelete: "CASCADE"
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
             })
         )
-    
+
         await queryRunner.createForeignKey(
             this.acceptTermsTable,
             new TableForeignKey({
                 columnNames: ["terms_id"],
                 referencedColumnNames: ["id"],
                 referencedTableName: this.termsTable,
-                onDelete: "CASCADE"
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
+            })
+        )
+
+        await queryRunner.createForeignKey(
+            this.acceptTermsTable,
+            new TableForeignKey({
+                columnNames: ["establishment_id"],
+                referencedColumnNames: ["id"],
+                referencedTableName: this.establishmentsTable,
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable(this.acceptTermsTable)
-        await queryRunner.dropTable(this.termsTable)
+        const acceptTable = await queryRunner.getTable(this.acceptTermsTable)
+
+        if (acceptTable) {
+            const userFk = acceptTable.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("user_id") !== -1
+            )
+            const termsFk = acceptTable.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("terms_id") !== -1
+            )
+            const establishmentFk = acceptTable.foreignKeys.find(
+                (fk) => fk.columnNames.indexOf("establishment_id") !== -1
+            )
+
+            if (userFk)
+                await queryRunner.dropForeignKey(this.acceptTermsTable, userFk)
+
+            if (termsFk)
+                await queryRunner.dropForeignKey(this.acceptTermsTable, termsFk)
+
+            if (establishmentFk)
+                await queryRunner.dropForeignKey(
+                    this.acceptTermsTable,
+                    establishmentFk
+                )
+        }
+
+        await queryRunner.dropTable(this.acceptTermsTable, true)
+        await queryRunner.dropTable(this.termsTable, true)
     }
 }

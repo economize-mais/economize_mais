@@ -1,22 +1,21 @@
-import { 
+import { Expose } from "class-transformer"
+import {
     IsNotEmpty,
-    IsOptional, 
-    IsString, 
-    IsUUID, 
+    IsOptional,
+    IsString,
+    IsUUID,
     Length
 } from "class-validator"
-import { Expose } from "class-transformer"
 
 import { ApiProperty } from "@nestjs/swagger"
 
 export class AddressDto {
-    
     @ApiProperty({ example: "342db863-f729-4c25-98dd-f313f19cb525" })
     @IsOptional()
     @IsUUID(4)
     @Expose()
     id?: string
-    
+
     @ApiProperty({ example: "Avenida Paulista" })
     @IsString()
     @IsNotEmpty()
@@ -44,7 +43,9 @@ export class AddressDto {
     @ApiProperty({ example: "SP", maxLength: 2 })
     @IsNotEmpty()
     @IsString()
-    @Length(2, 2, { message: "O campo 'state' deve conter exatamente 2 caracteres" })
+    @Length(2, 2, {
+        message: "O campo 'state' deve conter exatamente 2 caracteres"
+    })
     @Expose()
     state: string
 

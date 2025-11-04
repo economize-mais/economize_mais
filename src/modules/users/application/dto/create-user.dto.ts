@@ -14,33 +14,36 @@ import {
 } from "class-validator"
 
 import { startOfDayInTimezone } from "@/common/utils/date.utils"
+import { AddressDto } from "@/modules/shared/dto/address.dto"
 
-import { AddressDto } from "./address.dto"
-
+import { UserType } from "../../../shared/enums/user-type.enum"
 import { Gender } from "../../domain/enums/gender.enum"
-import { UserType } from "../../domain/enums/user-type.enum"
 
 export class CreateUserDto {
+    @ApiProperty({ enum: UserType })
+    @IsEnum(UserType)
+    type: UserType
+
+    @ApiProperty({ example: "John Doe", required: false })
+    @IsNotEmpty()
+    @IsString()
+    name: string
+
     @ApiProperty({ example: "user@example.com" })
     @IsEmail()
     email: string
 
     @ApiProperty({ example: "strongPassword123" })
+    @IsNotEmpty({ message: "nome do usuário é obrigatório" })
     @IsString()
-    @IsNotEmpty()
     password: string
-
-    @ApiProperty({ example: "John Doe", required: false })
-    @IsOptional()
-    @IsString()
-    fullName?: string
 
     @ApiProperty({ example: "12345678901" })
     @IsString()
-    @Matches(/^\d{11,14}$/, {
-        message: "CPF/CNPJ must have between 11 and 14 digits"
+    @Matches(/^\d{11}$/, {
+        message: "CPF deve ter 11 digitos"
     })
-    cpfCnpj: string
+    cpf: string
 
     @ApiProperty({ example: "(35)99942-1613", maxLength: 20 })
     @IsString()
@@ -51,33 +54,15 @@ export class CreateUserDto {
         description: "Data de nascimento do usuário (YYYY-MM-DD)",
         example: "1990-01-01"
     })
-    @IsDate({ message: "startDate deve ser uma data válida" })
+    @IsDate({ message: "A data de nascimento deve ser uma data válida" })
     @IsNotEmpty({ message: "A data de nascimento é obrigatória" })
     @Transform(({ value }) => startOfDayInTimezone(value))
     birthDate: Date
 
     @ApiProperty({ enum: Gender, required: false })
     @IsEnum(Gender)
+    @IsOptional()
     gender?: Gender
-
-    @ApiProperty({ enum: UserType })
-    @IsEnum(UserType)
-    userType: UserType
-
-    @ApiProperty({ example: "Supermercado Bom Preço", required: false })
-    @IsOptional()
-    @IsString()
-    companyName?: string
-
-    @ApiProperty({ example: "Bom Preço", required: false })
-    @IsOptional()
-    @IsString()
-    tradeName?: string
-
-    @ApiProperty({ example: "https://example.com/logo.png", required: false })
-    @IsOptional()
-    @IsString()
-    logoUrl?: string
 
     @ApiProperty({ type: OmitType(AddressDto, ["id"] as const), isArray: true })
     @IsOptional()
