@@ -22,8 +22,8 @@ import { CreateServiceUseCase } from "./application/use-cases/create-user.use-ca
 import { UpdatePasswordUseCase } from "./application/use-cases/update-password.use-case"
 import { UpdateUserUseCase } from "./application/use-cases/update-user.use-case"
 
-@Controller("/api/User")
-@ApiTags("User routes")
+@Controller("/api/user")
+@ApiTags("Routes for creating and updating user data and passwords")
 export class UserController {
     constructor(
         private readonly create: CreateServiceUseCase,

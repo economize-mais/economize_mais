@@ -19,7 +19,7 @@ import { TermsResponseDto } from "./application/dto/terms-response.dto"
 import { AcceptTermUseCase } from "./application/use-cases/accept-term.use-case"
 import { GetTermsByTypeUseCase } from "./application/use-cases/get-terms-by-type.use-case"
 
-@Controller("/api/Terms")
+@Controller("/api/terms")
 @ApiTags("Routes to terms of use and privacy policy")
 export class TermsController {
     constructor(
