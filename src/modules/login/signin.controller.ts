@@ -6,7 +6,7 @@ import { SigninDto } from "./application/dto/signin.dto"
 import { SigninUseCase } from "./application/use-cases/signin.use-case"
 
 @Controller("/api/login")
-@ApiTags("Login routes")
+@ApiTags("Route to gain access to other routes")
 export class SigninController {
     constructor(private readonly signinUseCase: SigninUseCase) {}
 

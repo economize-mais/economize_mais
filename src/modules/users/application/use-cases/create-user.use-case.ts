@@ -29,7 +29,7 @@ export class CreateServiceUseCase {
         if (await this.repo.isEmailTaken(data.email))
             throw new ConflictException(`Email ${data.email} já está em uso`)
 
-        if (await this.repo.isCpfCnpjTaken(data.cpf))
+        if (await this.repo.isCpfTaken(data.cpf))
             throw new ConflictException(`CPF ${data.cpf} já está em uso`)
 
         const hashPassoword = await this.hashProvider.hash(data.password)

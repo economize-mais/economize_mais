@@ -1,8 +1,7 @@
 import { ApiProperty, OmitType } from "@nestjs/swagger"
-import { Transform, Type } from "class-transformer"
+import { Type } from "class-transformer"
 import {
     IsArray,
-    IsDate,
     IsEmail,
     IsEnum,
     IsNotEmpty,
@@ -13,23 +12,25 @@ import {
     ValidateNested
 } from "class-validator"
 
-import { startOfDayInTimezone } from "@/common/utils/date.utils"
 import { AddressDto } from "@/modules/shared/dto/address.dto"
+import { UserType } from "@/modules/shared/enums/user-type.enum"
 
-import { UserType } from "../../../shared/enums/user-type.enum"
-import { Gender } from "../../domain/enums/gender.enum"
-
-export class CreateUserDto {
+export class CreateEstablishmentDto {
     @ApiProperty({ enum: UserType })
     @IsEnum(UserType)
     type: UserType
 
-    @ApiProperty({ example: "John Doe", required: false })
-    @IsNotEmpty({ message: "Nome do usuário é obrigatório" })
+    @ApiProperty({ example: "Supermercado Economize Mais" })
+    @IsNotEmpty({ message: "Razão social da empresa é obrigatório" })
     @IsString()
-    name: string
+    companyName: string
 
-    @ApiProperty({ example: "user@example.com" })
+    @ApiProperty({ example: "Economize Mais" })
+    @IsNotEmpty({ message: "Nome fantasia da empresa é obrigatório" })
+    @IsString()
+    tradeName: string
+
+    @ApiProperty({ example: "economizemais@example.com" })
     @IsNotEmpty({ message: "Email do usuário é obrigatório" })
     @IsEmail()
     email: string
@@ -41,29 +42,20 @@ export class CreateUserDto {
 
     @ApiProperty({ example: "12345678901" })
     @IsString()
-    @Matches(/^\d{11}$/, {
-        message: "CPF deve ter 11 digitos"
+    @Matches(/^\d{14}$/, {
+        message: "CNPJ deve ter 14 digitos"
     })
-    cpf: string
+    cnpj: string
 
     @ApiProperty({ example: "(35)99942-1613", maxLength: 20 })
     @IsString()
     @MaxLength(20, { message: "O telefone deve ter no máximo 20 caracteres" })
     phone: string
 
-    @ApiProperty({
-        description: "Data de nascimento do usuário (YYYY-MM-DD)",
-        example: "1990-01-01"
-    })
-    @IsDate({ message: "A data de nascimento deve ser uma data válida" })
-    @IsNotEmpty({ message: "A data de nascimento é obrigatória" })
-    @Transform(({ value }) => startOfDayInTimezone(value))
-    birthDate: Date
-
-    @ApiProperty({ enum: Gender, required: false })
-    @IsEnum(Gender)
+    @ApiProperty({ example: "https://example.com/logo.png", required: false })
     @IsOptional()
-    gender?: Gender
+    @IsString()
+    logoUrl?: string
 
     @ApiProperty({ type: OmitType(AddressDto, ["id"] as const), isArray: true })
     @IsOptional()
