@@ -5,15 +5,14 @@ import {
     IHashService
 } from "@/common/hash/interfaces/hash-service.interface"
 
-import { CreateUserDto } from "../dto/create-user.dto"
-
-import { userToResponse } from "../presenter/user.presenter"
-
 import {
     IUserRepository,
     USER_REPOSITORY
 } from "../../domain/interfaces/user-repository.interface"
 import { UserValidator } from "../../domain/validators/user.validator"
+
+import { CreateUserDto } from "../dto/create-user.dto"
+import { userToResponse } from "../presenter/user.presenter"
 
 @Injectable()
 export class CreateServiceUseCase {
@@ -30,16 +29,11 @@ export class CreateServiceUseCase {
         if (await this.repo.isEmailTaken(data.email))
             throw new ConflictException(`Email ${data.email} já está em uso`)
 
-        if (await this.repo.isCpfCnpjTaken(data.cpfCnpj))
-            throw new ConflictException(
-                `${data.cpfCnpj.length === 11 ? "CPF" : "CNPJ"} ${data.cpfCnpj} já está em uso`
-            )
+        if (await this.repo.isCpfCnpjTaken(data.cpf))
+            throw new ConflictException(`CPF ${data.cpf} já está em uso`)
 
         const hashPassoword = await this.hashProvider.hash(data.password)
         const entity = {
-            name: data.fullName,
-            cpf: data.cpfCnpj,
-            type: data.userType,
             ...data,
             password: hashPassoword
         }

@@ -1,9 +1,7 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm"
 
-export class CreateTableEstablishments1762120994799
-    implements MigrationInterface
-{
-    private tableName: string = "establishments"
+export class CreateUserTable1762211353880 implements MigrationInterface {
+    private tableName: string = "users"
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`)
@@ -21,9 +19,14 @@ export class CreateTableEstablishments1762120994799
                         default: "uuid_generate_v4()"
                     },
                     {
+                        name: "type",
+                        type: "varchar",
+                        isNullable: false,
+                        comment: "'USER' for normal users"
+                    },
+                    {
                         name: "name",
                         type: "varchar",
-                        length: "150",
                         isNullable: false
                     },
                     {
@@ -38,9 +41,9 @@ export class CreateTableEstablishments1762120994799
                         isNullable: false
                     },
                     {
-                        name: "cnpj",
+                        name: "cpf",
                         type: "varchar",
-                        length: "20",
+                        length: "14",
                         isNullable: false,
                         isUnique: true
                     },
@@ -52,25 +55,16 @@ export class CreateTableEstablishments1762120994799
                         default: "'(35)99999-9999'"
                     },
                     {
-                        name: "type",
-                        type: "varchar",
-                        isNullable: false,
-                        comment: "'COMPANY' for supermarkets"
-                    },
-                    {
-                        name: "logo_url",
-                        type: "text",
+                        name: "birth_date",
+                        type: "date",
                         isNullable: true
                     },
                     {
-                        name: "display_order",
-                        type: "integer",
-                        default: 0
-                    },
-                    {
-                        name: "is_active",
-                        type: "boolean",
-                        default: true
+                        name: "gender",
+                        type: "char",
+                        length: "1",
+                        isNullable: true,
+                        comment: "M = Male, F = Female"
                     },
                     {
                         name: "created_at",
@@ -83,14 +77,13 @@ export class CreateTableEstablishments1762120994799
                         default: "now()"
                     }
                 ]
-            }),
-            true
+            })
         )
 
         await queryRunner.createIndex(
             this.tableName,
             new TableIndex({
-                name: "IDX_establishments_email",
+                name: "IDX_users_email",
                 columnNames: ["email"]
             })
         )
@@ -98,21 +91,16 @@ export class CreateTableEstablishments1762120994799
         await queryRunner.createIndex(
             this.tableName,
             new TableIndex({
-                name: "IDX_establishments_display_order",
-                columnNames: ["display_order"]
+                name: "IDX_users_cpf",
+                columnNames: ["cpf"]
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropIndex(
-            "establishments",
-            "IDX_establishments_display_order"
-        )
-        await queryRunner.dropIndex(
-            "establishments",
-            "IDX_establishments_email"
-        )
-        await queryRunner.dropTable("establishments")
+        await queryRunner.dropIndex(this.tableName, "IDX_users_cpf")
+        await queryRunner.dropIndex(this.tableName, "IDX_users_email")
+
+        await queryRunner.dropTable(this.tableName)
     }
 }

@@ -16,17 +16,13 @@ export class UserOrigin {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ name: "user_id", type: "uuid" })
-    userId: string
+    @Column({ type: "uuid" })
+    user_id: string
 
-    @Column({ name: "origin_id" })
-    originId: number
+    @Column({ type: "int4" })
+    origin_id: number
 
-    @CreateDateColumn({
-        name: "accepted_at",
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP"
-    })
+    @CreateDateColumn({ name: "accepted_at", type: "timestamp" })
     acceptedAt: Date
 
     @ManyToOne(() => User, (user) => user.userOrigin, { onDelete: "CASCADE" })
@@ -34,8 +30,8 @@ export class UserOrigin {
     user: User
 
     @ManyToOne(() => Origin, (origin) => origin.userOrigins, {
-        eager: true,
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        eager: true
     })
     @JoinColumn({ name: "origin_id" })
     origin: Origin

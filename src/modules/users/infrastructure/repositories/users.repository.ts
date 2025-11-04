@@ -23,8 +23,8 @@ export class UserRepository
         return !!user
     }
 
-    async isCpfCnpjTaken(cpfCnpj: any): Promise<boolean> {
-        const user = await this.repo.findOne({ where: { cpf: cpfCnpj } })
+    async isCpfCnpjTaken(cpf: any): Promise<boolean> {
+        const user = await this.repo.findOne({ where: { cpf } })
         return !!user
     }
 }

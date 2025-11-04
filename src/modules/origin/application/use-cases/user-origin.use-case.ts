@@ -23,12 +23,18 @@ export class AcceptOriginUseCase {
 
         if (!origin) throw new NotFoundException(`Origem não encontrada`)
 
-        if (await this.userOrigin.findOne({ where: { userId, originId } }))
+        if (
+            await this.userOrigin.findOne({
+                where: { user_id: userId, origin_id: originId }
+            })
+        )
             return {
                 message: "Onde nos encontrou já informado"
             }
 
-        if (await this.userOrigin.save({ userId, originId }))
+        if (
+            await this.userOrigin.save({ user_id: userId, origin_id: originId })
+        )
             return {
                 message: "Onde nos encontrou salvo com sucesso"
             }

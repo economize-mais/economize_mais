@@ -9,28 +9,34 @@ import {
 } from "typeorm"
 
 import { UserOrigin } from "@/modules/origin/domain/entities/user-origin.entity"
+import { Address } from "@/modules/shared/domain/entities/addresses.entity"
+import { UserType } from "@/modules/shared/enums/user-type.enum"
 import { UserTermsAcceptance } from "@/modules/terms/domain/entities/user-terms-acceptance.entity"
-import { Gender } from "@/modules/users/domain/enums/gender.enum"
 
-import { UserType } from "../enums/user-type.enum"
-import { Address } from "./addresses.entity"
+import { Gender } from "../enums/gender.enum"
 
 @Entity("users")
 export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string
 
-    @Column({ name: "full_name" })
+    @Column({ type: "varchar" })
+    type: UserType
+
+    @Column({ type: "varchar" })
     name: string
 
-    @Column({ unique: true })
+    @Column({ type: "varchar", unique: true })
     email: string
 
     @Column()
     password: string
 
-    @Column({ name: "cpf", length: 20, unique: true })
+    @Column({ type: "varchar", length: 14, unique: true })
     cpf: string
+
+    @Column({ type: "varchar", length: 20, nullable: false })
+    phone: string
 
     @Column({ name: "birth_date", type: "date", nullable: true })
     birthDate?: Date
@@ -43,17 +49,13 @@ export class User {
     })
     gender?: Gender
 
-    @Column({
-        name: "type",
-        comment: "'USER' for normal users"
-    })
-    type: UserType
+    @CreateDateColumn({ name: "created_at", type: "timestamp" })
+    createdAt: Date
 
-    @Column({ type: "varchar", length: 20, nullable: false })
-    phone: string
+    @UpdateDateColumn({ name: "updated_at", type: "timestamp" })
+    updatedAt: Date
 
     @OneToMany(() => Address, (address) => address.user, {
-        nullable: true,
         eager: true,
         cascade: true
     })
@@ -70,10 +72,4 @@ export class User {
         cascade: true
     })
     userOrigin: UserOrigin
-
-    @CreateDateColumn({ name: "created_at" })
-    createdAt: Date
-
-    @UpdateDateColumn({ name: "updated_at" })
-    updatedAt: Date
 }

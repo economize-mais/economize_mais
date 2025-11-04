@@ -7,9 +7,9 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm"
 
+import { Establishment } from "@/modules/establishments/domain/entities/establishment.entity"
 import { User } from "@/modules/users/domain/entities/users.entity"
 
-import { Establishment } from "@/modules/users/domain/entities/establishment.entity"
 import { Terms } from "./terms.entity"
 
 @Entity("user_terms_acceptance")
@@ -17,36 +17,36 @@ export class UserTermsAcceptance {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ name: "user_id", type: "uuid", nullable: true })
-    userId?: string
+    @Column({ type: "uuid", nullable: true })
+    user_id?: string
+
+    @Column({ type: "uuid", nullable: true })
+    establishment_id?: string
+
+    @Column({ type: "int4" })
+    terms_id: number
+
+    @CreateDateColumn({ name: "accepted_at", type: "timestamp" })
+    acceptedAt: Date
 
     @ManyToOne(() => User, (user) => user.terms, {
-        nullable: true,
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        nullable: true
     })
     @JoinColumn({ name: "user_id" })
     user?: User
 
-    @Column({ name: "establishment_id", type: "uuid", nullable: true })
-    establishmentId?: string
-
     @ManyToOne(() => Establishment, (est) => est.terms, {
-        nullable: true,
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        nullable: true
     })
     @JoinColumn({ name: "establishment_id" })
     establishment?: Establishment
 
-    @Column({ name: "terms_id" })
-    termsId: number
-
     @ManyToOne(() => Terms, (terms) => terms.acceptTerms, {
-        eager: true,
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        eager: true
     })
     @JoinColumn({ name: "terms_id" })
     terms: Terms
-
-    @CreateDateColumn({ name: "accepted_at", type: "timestamp" })
-    acceptedAt: Date
 }
