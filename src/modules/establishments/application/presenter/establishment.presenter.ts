@@ -28,6 +28,7 @@ export const establishmentToResponse = (
         excludeExtraneousValues: true
     })
     dto.termsAcceptance = terms
+    dto.originAcceptance = true
 
     return dto
 }

@@ -42,6 +42,6 @@ export class OriginController {
     @UseGuards(AuthGuard)
     @Post()
     async userOrigin(@User() user: JwtPayload, @Body() term: UserOriginDto) {
-        return await this.accept.execute(user.sub, term.id)
+        return await this.accept.execute(user.type, user.sub, term.id)
     }
 }
