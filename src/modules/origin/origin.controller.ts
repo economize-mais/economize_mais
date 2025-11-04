@@ -18,7 +18,7 @@ import { UserOriginDto } from "./application/dto/user-origin.dto"
 import { GetOriginUseCase } from "./application/use-cases/get-origin.use-case"
 import { AcceptOriginUseCase } from "./application/use-cases/user-origin.use-case"
 
-@Controller("/api/Origin")
+@Controller("/api/origin")
 @ApiTags("Routes to manage user origin information")
 export class OriginController {
     constructor(

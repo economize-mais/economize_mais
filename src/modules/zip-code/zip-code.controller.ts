@@ -4,7 +4,7 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger"
 import { ZipCodePresenter } from "./application/presenter/zip-code.presenter"
 import { GetZipCodeUseCase } from "./application/use-cases/get-zip-code.use-cases"
 
-@Controller("/api/ZipCode")
+@Controller("/api/zipCode")
 @ApiTags("Route to get address data by zip code")
 export class ZipCodeController {
     constructor(private readonly zipCode: GetZipCodeUseCase) {}
