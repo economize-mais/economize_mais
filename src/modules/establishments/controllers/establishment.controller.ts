@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from "@nestjs/common"
 import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
-import { CreateEstablishmentDto } from "./application/dto/create-establishment.dto"
-import { EstablishmentResponseDto } from "./application/dto/establishment-response.dto"
-import { CreateServiceUseCase } from "./application/use-cases/create-establishment.use-case"
+import { CreateEstablishmentDto } from "../application/dto/create-establishment.dto"
+import { EstablishmentResponseDto } from "../application/dto/establishment-response.dto"
+import { CreateServiceUseCase } from "../application/use-cases/create-establishment.use-case"
 
 @Controller("/api/establishment")
 @ApiTags("Routes for creating and updating establishment data and passwords")
