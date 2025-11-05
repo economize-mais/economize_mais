@@ -11,6 +11,8 @@ import { Address } from "@/modules/shared/domain/entities/addresses.entity"
 import { UserType } from "@/modules/shared/enums/user-type.enum"
 import { UserTermsAcceptance } from "@/modules/terms/domain/entities/user-terms-acceptance.entity"
 
+import { EstablishmentTypeLinks } from "./establishment-type-links.entity"
+
 @Entity("establishments")
 export class Establishment {
     @PrimaryGeneratedColumn("uuid")
@@ -63,4 +65,7 @@ export class Establishment {
         cascade: true
     })
     terms?: UserTermsAcceptance[]
+
+    @OneToMany(() => EstablishmentTypeLinks, (link) => link.establishment)
+    typeLinks: EstablishmentTypeLinks[]
 }
