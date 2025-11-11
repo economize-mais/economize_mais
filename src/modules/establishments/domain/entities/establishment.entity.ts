@@ -7,6 +7,7 @@ import {
     UpdateDateColumn
 } from "typeorm"
 
+import { Product } from "@/modules/products/domain/entities/product.entity"
 import { Address } from "@/modules/shared/domain/entities/addresses.entity"
 import { UserType } from "@/modules/shared/enums/user-type.enum"
 import { UserTermsAcceptance } from "@/modules/terms/domain/entities/user-terms-acceptance.entity"
@@ -68,4 +69,10 @@ export class Establishment {
 
     @OneToMany(() => EstablishmentTypeLinks, (link) => link.establishment)
     typeLinks: EstablishmentTypeLinks[]
+
+    @OneToMany(() => Product, (product) => product.establishment, {
+        cascade: true,
+        eager: false
+    })
+    products: Product[]
 }
