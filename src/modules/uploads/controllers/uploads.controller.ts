@@ -26,7 +26,7 @@ import { UploadResponseDto } from "../application/dtos/upload-response.dto"
 import { DeleteImageUseCase } from "../application/use-cases/delete-image.use-case"
 import { UploadImageUseCase } from "../application/use-cases/upload-image.use-case"
 
-@Controller("uploads")
+@Controller("/api/uploads")
 @ApiTags("Routes for saving and deleting images")
 export class UploadsController {
     constructor(
