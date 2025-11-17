@@ -19,6 +19,21 @@ export class ProductRepository
         super(repo)
     }
 
+    async getDisplayOrder(
+        establishmentId: string,
+        categoryId: string
+    ): Promise<number> {
+        const product = await this.repo.findOne({
+            where: {
+                establishmentId,
+                categoryId
+            },
+            order: { displayOrder: "DESC" }
+        })
+
+        return ++product.displayOrder
+    }
+
     async getProductsByEstablishment(
         establishmentId: string
     ): Promise<Record<string, Product[]>> {

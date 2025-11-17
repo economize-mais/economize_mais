@@ -5,7 +5,7 @@ import {
     ICategoryRepository
 } from "../../domain/interfaces/category-repository.interface"
 
-import { CategoriesResponseDto } from "../dto/categories.dto"
+import { CategoriesResponseDto } from "../dto/categories-response.dto"
 import { categoriesToResponse } from "../presenter/categories.presenter"
 
 @Injectable()
