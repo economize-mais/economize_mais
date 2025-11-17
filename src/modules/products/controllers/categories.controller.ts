@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger"
 
 import { AuthGuard } from "@/auth/infrastructure/auth.guard"
 
-import { CategoriesResponseDto } from "../application/dto/categories.dto"
+import { CategoriesResponseDto } from "../application/dto/categories-response.dto"
 import { GetCategoriesUseCase } from "../application/use-cases/categories.usecase"
 
 @Controller("/api/categories")

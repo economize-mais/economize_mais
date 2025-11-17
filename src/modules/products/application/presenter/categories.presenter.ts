@@ -1,5 +1,5 @@
 import { Category } from "../../domain/entities/category.entity"
-import { CategoriesResponseDto } from "../dto/categories.dto"
+import { CategoriesResponseDto } from "../dto/categories-response.dto"
 
 export const categoriesToResponse = (
     category: Category

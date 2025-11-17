@@ -5,6 +5,7 @@ import { AuthModule } from "@/auth/infrastructure/auth.module"
 import { CommonModule } from "@/common/common.module"
 
 import { GetCategoriesUseCase } from "./application/use-cases/categories.usecase"
+import { CreateProductUseCase } from "./application/use-cases/create-products.usecase"
 import { GetProductsUseCase } from "./application/use-cases/products.usecase"
 
 import { CategoriesController } from "./controllers/categories.controller"
@@ -27,6 +28,7 @@ import { ProductRepository } from "./infrastructure/repositories/product.reposit
     controllers: [CategoriesController, ProductsController],
     providers: [
         GetCategoriesUseCase,
+        CreateProductUseCase,
         GetProductsUseCase,
         {
             provide: CATEGORY_REPOSITORY,
