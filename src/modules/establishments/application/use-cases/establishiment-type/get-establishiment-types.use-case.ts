@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from "@nestjs/common"
+import { Inject, Injectable } from "@nestjs/common"
 
 import {
     ESTABLISHMENT_TYPE_REPOSITORY,
@@ -9,18 +9,15 @@ import { EstablishmentSummaryResponse } from "../../dto/establishiment-type/esta
 import { EstablishmentTypeResponse } from "../../dto/establishiment-type/get-establishment-types.response"
 
 @Injectable()
-export class EstablishmentTypesUseCase implements OnModuleInit {
+export class EstablishmentTypesUseCase {
     constructor(
         @Inject(ESTABLISHMENT_TYPE_REPOSITORY)
         private readonly repo: IEstablishmentTypeRepository
     ) {}
 
-    async onModuleInit() {
-        await this.execute()
-    }
-
     async execute(): Promise<EstablishmentTypeResponse[]> {
         const types = await this.repo.getAllActiveTypesWithEstablishments()
+
         return types.map((t) => {
             const dto = new EstablishmentTypeResponse()
             dto.id = t.id
@@ -36,6 +33,7 @@ export class EstablishmentTypesUseCase implements OnModuleInit {
                     const dto = new EstablishmentSummaryResponse()
                     dto.id = item.establishment.id
                     dto.name = item.establishment.tradeName
+                    dto.street = `${item.establishment.addresses[0].street}, ${item.establishment.addresses[0].number}`
                     dto.logoUrl = item.establishment.logoUrl
                     dto.displayOrder = item.establishment.displayOrder
                     return dto
