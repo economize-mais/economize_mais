@@ -17,6 +17,13 @@ export class EstablishmentSummaryResponse {
     name: string
 
     @ApiProperty({
+        description: "Endereco do estabelecimento",
+        example: "Av. Governador Valadares, 100"
+    })
+    @IsString()
+    street: string
+
+    @ApiProperty({
         description: "URL da logo do estabelecimento",
         example: "https://cdn.app.com/alvorada.png",
         required: false
