@@ -1,11 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common"
 
+import { Product } from "../../domain/entities/product.entity"
 import {
     IProductRepository,
     PRODUCTS_REPOSITORY
 } from "../../domain/interfaces/product-repository.interface"
 
-import { Product } from "../../domain/entities/product.entity"
 import { CreateProductDto } from "../dto/create-product.dto"
 
 @Injectable()

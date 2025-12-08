@@ -6,7 +6,9 @@ import { CommonModule } from "@/common/common.module"
 
 import { GetCategoriesUseCase } from "./application/use-cases/categories.usecase"
 import { CreateProductUseCase } from "./application/use-cases/create-products.usecase"
+import { DeleteProductUseCase } from "./application/use-cases/delete-product.use-case"
 import { GetProductsUseCase } from "./application/use-cases/products.usecase"
+import { UpdateProductUseCase } from "./application/use-cases/update-product.use-case"
 
 import { CategoriesController } from "./controllers/categories.controller"
 import { ProductsController } from "./controllers/products.controller"
@@ -19,17 +21,22 @@ import { PRODUCTS_REPOSITORY } from "./domain/interfaces/product-repository.inte
 import { CategoryRepository } from "./infrastructure/repositories/category.repository"
 import { ProductRepository } from "./infrastructure/repositories/product.repository"
 
+import { UploadsModule } from "../uploads/uploads.module"
+
 @Module({
     imports: [
         TypeOrmModule.forFeature([Category, Product]),
         AuthModule,
-        CommonModule
+        CommonModule,
+        UploadsModule
     ],
     controllers: [CategoriesController, ProductsController],
     providers: [
-        GetCategoriesUseCase,
         CreateProductUseCase,
+        DeleteProductUseCase,
+        GetCategoriesUseCase,
         GetProductsUseCase,
+        UpdateProductUseCase,
         {
             provide: CATEGORY_REPOSITORY,
             useClass: CategoryRepository
