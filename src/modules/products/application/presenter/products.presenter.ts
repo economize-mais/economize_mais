@@ -10,8 +10,10 @@ export const productsToResponse = (product: Product): ProductResponseDto => {
     dto.priceOriginal = product.priceOriginal
     dto.priceOffer = product.priceOffer
     dto.discountPercent = product.discountPercent
-    dto.imageUrl = product.imageUrl
+    dto.offerStartDate = product.offerStartDate
     dto.offerExpiration = product.offerExpiration
+    dto.productExpirationDate = product.productExpirationDate
+    dto.imageUrl = product.imageUrl
 
     return dto
 }
