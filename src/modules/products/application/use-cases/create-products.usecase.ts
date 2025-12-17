@@ -5,6 +5,7 @@ import {
     IProductRepository,
     PRODUCTS_REPOSITORY
 } from "../../domain/interfaces/product-repository.interface"
+import { ProductValidator } from "../../domain/validator/product.validator"
 
 import { CreateProductDto } from "../dto/create-product.dto"
 
@@ -16,6 +17,8 @@ export class CreateProductUseCase {
     ) {}
 
     async execute(establishment_id: string, data: CreateProductDto) {
+        ProductValidator.validate(data)
+
         const product = new Product()
 
         const displayOrder = await this.productsRepo.getDisplayOrder(
@@ -34,7 +37,11 @@ export class CreateProductUseCase {
             data.offerPrice
         )
 
+        product.productExpirationDate = data.productExpirationDate ?? null
+
+        product.offerStartDate = data.offerStartDate
         product.offerExpiration = data.offerExpiration
+
         product.imageUrl = data.imageUrl
         product.displayOrder = displayOrder
 

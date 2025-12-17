@@ -41,12 +41,28 @@ export class UpdateProductDto {
     offerPrice?: number
 
     @ApiPropertyOptional({
+        example: "2025-11-15",
+        description: "Data de início da oferta"
+    })
+    @IsDateString()
+    @IsOptional()
+    offerStartDate?: Date
+
+    @ApiPropertyOptional({
         example: "2025-12-10",
-        description: "Data de validade da oferta"
+        description: "Data de término da oferta"
     })
     @IsDateString()
     @IsOptional()
     offerExpiration?: Date
+
+    @ApiPropertyOptional({
+        example: "2025-12-20",
+        description: "Data de validade do produto"
+    })
+    @IsDateString()
+    @IsOptional()
+    productExpirationDate?: Date
 
     @ApiPropertyOptional({
         example: "https://.../products/123.jpg",

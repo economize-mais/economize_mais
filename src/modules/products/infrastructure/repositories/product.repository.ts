@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { MoreThanOrEqual, Repository } from "typeorm"
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from "typeorm"
 
 import { BaseRepository } from "@/common/base/base.repository"
 
@@ -43,6 +43,7 @@ export class ProductRepository
             where: {
                 establishmentId,
                 isActive: true,
+                offerStartDate: LessThanOrEqual(currentDate),
                 offerExpiration: MoreThanOrEqual(currentDate)
             },
             order: { category: { displayOrder: "ASC" }, displayOrder: "ASC" }
