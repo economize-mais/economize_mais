@@ -10,6 +10,7 @@ import {
     IProductRepository,
     PRODUCTS_REPOSITORY
 } from "../../domain/interfaces/product-repository.interface"
+import { ProductValidator } from "../../domain/validator/product.validator"
 
 import { UpdateProductDto } from "../dto/update-product.dto"
 
@@ -52,7 +53,13 @@ export class UpdateProductUseCase {
             priceOffer
         )
 
+        product.productExpirationDate =
+            dto.productExpirationDate ?? product.productExpirationDate
+        product.offerStartDate = dto.offerStartDate ?? product.offerStartDate
         product.offerExpiration = dto.offerExpiration ?? product.offerExpiration
+
+        ProductValidator.validate(product)
+
         product.imageUrl = dto.imageUrl ?? product.imageUrl
 
         return await this.productsRepo.save(product)

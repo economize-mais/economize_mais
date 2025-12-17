@@ -50,7 +50,25 @@ export class Product {
     })
     discountPercent: number
 
-    @Column({ name: "offer_expiration", type: "date", nullable: false })
+    @Column({
+        name: "product_expiration_date",
+        type: "date",
+        nullable: true
+    })
+    productExpirationDate?: Date
+
+    @Column({
+        name: "offer_start_date",
+        type: "date",
+        nullable: false
+    })
+    offerStartDate: Date
+
+    @Column({
+        name: "offer_expiration",
+        type: "date",
+        nullable: false
+    })
     offerExpiration: Date
 
     @Column({ name: "image_url", type: "text", nullable: true })

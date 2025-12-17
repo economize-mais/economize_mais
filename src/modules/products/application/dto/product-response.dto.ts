@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger"
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger"
 import { Expose } from "class-transformer"
 
 export class ProductResponseDto {
@@ -16,7 +16,7 @@ export class ProductResponseDto {
     @Expose()
     name: string
 
-    @ApiProperty({
+    @ApiPropertyOptional({
         description: "Descrição breve do produto",
         example: "Arroz branco tipo 1, pacote de 5kg"
     })
@@ -48,16 +48,30 @@ export class ProductResponseDto {
     discountPercent: number
 
     @ApiProperty({
+        description: "Data de início da oferta",
+        example: "2025-11-15"
+    })
+    @Expose({ name: "offer_start_date" })
+    offerStartDate: Date
+
+    @ApiProperty({
+        description: "Data de expiração da oferta",
+        example: "2025-12-10"
+    })
+    @Expose({ name: "offer_expiration" })
+    offerExpiration: Date
+
+    @ApiPropertyOptional({
+        description: "Data de validade do produto (quando aplicável)",
+        example: "2025-12-20"
+    })
+    @Expose({ name: "product_expiration_date" })
+    productExpirationDate?: Date
+
+    @ApiProperty({
         description: "URL da imagem do produto",
         example: "https://cdn.app.com/images/products/arroz-tio-joao.jpg"
     })
     @Expose({ name: "image_url" })
     imageUrl: string
-
-    @ApiProperty({
-        description: "Data de expiração da oferta",
-        example: "2025-11-12"
-    })
-    @Expose({ name: "offer_expiration" })
-    offerExpiration: Date
 }
