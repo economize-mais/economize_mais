@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from "@nestjs/swagger"
 import {
+    IsBoolean,
     IsDateString,
     IsNumber,
     IsOptional,
@@ -23,6 +24,22 @@ export class UpdateProductDto {
     @IsString()
     @IsOptional()
     name?: string
+
+    @ApiPropertyOptional({
+        example: "1.5",
+        description: "Peso do produto"
+    })
+    @IsNumber()
+    @IsOptional()
+    weight?: number
+
+    @ApiPropertyOptional({
+        example: "LT",
+        description: "unidade de medida do peso do produto"
+    })
+    @IsString()
+    @IsOptional()
+    unitOfMeasure?: string
 
     @ApiPropertyOptional({
         example: 10.99,
@@ -55,6 +72,14 @@ export class UpdateProductDto {
     @IsDateString()
     @IsOptional()
     offerExpiration?: Date
+
+    @ApiPropertyOptional({
+        example: "false",
+        description: "Flag para dizer se o produto tem validade"
+    })
+    @IsBoolean()
+    @IsOptional()
+    productHasExpirationDate?: boolean
 
     @ApiPropertyOptional({
         example: "2025-12-20",

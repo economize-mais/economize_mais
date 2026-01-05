@@ -16,6 +16,20 @@ export class ProductResponseDto {
     @Expose()
     name: string
 
+    @ApiProperty({
+        example: "1.5",
+        description: "Peso do produto"
+    })
+    @Expose()
+    weight: number
+
+    @ApiProperty({
+        example: "LT",
+        description: "unidade de medida do peso do produto"
+    })
+    @Expose({ name: "unit_of_measure" })
+    unitOfMeasure: string
+
     @ApiPropertyOptional({
         description: "Descrição breve do produto",
         example: "Arroz branco tipo 1, pacote de 5kg"
@@ -60,6 +74,13 @@ export class ProductResponseDto {
     })
     @Expose({ name: "offer_expiration" })
     offerExpiration: Date
+
+    @ApiPropertyOptional({
+        example: "false",
+        description: "Flag para dizer se o produto tem validade"
+    })
+    @Expose({ name: "product_has_expiration_date" })
+    productHasExpirationDate?: boolean
 
     @ApiPropertyOptional({
         description: "Data de validade do produto (quando aplicável)",

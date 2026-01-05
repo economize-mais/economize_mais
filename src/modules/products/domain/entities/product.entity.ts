@@ -51,6 +51,28 @@ export class Product {
     discountPercent: number
 
     @Column({
+        type: "numeric",
+        precision: 5,
+        scale: 2,
+        nullable: false
+    })
+    weight: number
+
+    @Column({
+        name: "unit_of_measure",
+        type: "varchar",
+        nullable: false
+    })
+    unitOfMeasure: string
+
+    @Column({
+        name: "product_has_expiration_date",
+        type: "boolean",
+        nullable: true
+    })
+    productHasExpirationDate?: boolean
+
+    @Column({
         name: "product_expiration_date",
         type: "date",
         nullable: true

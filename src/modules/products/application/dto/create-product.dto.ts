@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger"
 import {
+    IsBoolean,
     IsDateString,
     IsNotEmpty,
     IsNumber,
@@ -24,6 +25,22 @@ export class CreateProductDto {
     @IsString()
     @IsNotEmpty()
     name: string
+
+    @ApiProperty({
+        example: "1.5",
+        description: "Peso do produto"
+    })
+    @IsNumber()
+    @IsNotEmpty()
+    weight: number
+
+    @ApiProperty({
+        example: "LT",
+        description: "unidade de medida do peso do produto"
+    })
+    @IsString()
+    @IsNotEmpty()
+    unitOfMeasure: string
 
     @ApiProperty({
         example: 10.99,
@@ -56,6 +73,14 @@ export class CreateProductDto {
     @IsDateString()
     @IsNotEmpty()
     offerExpiration: Date
+
+    @ApiPropertyOptional({
+        example: "false",
+        description: "Flag para dizer se o produto tem validade"
+    })
+    @IsBoolean()
+    @IsOptional()
+    productHasExpirationDate?: boolean
 
     @ApiPropertyOptional({
         example: "2025-12-20",
