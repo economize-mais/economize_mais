@@ -38,6 +38,9 @@ export class UpdateProductUseCase {
         product.categoryId = dto.categoryId ?? product.categoryId
         product.name = dto.name ?? product.name
 
+        product.weight = dto.weight ?? product.weight
+        product.unitOfMeasure = dto.unitOfMeasure ?? product.unitOfMeasure
+
         const priceOriginal = dto.originalPrice ?? product.priceOriginal
         const priceOffer = dto.offerPrice ?? product.priceOffer
 
@@ -53,8 +56,12 @@ export class UpdateProductUseCase {
             priceOffer
         )
 
+        product.productHasExpirationDate =
+            dto.productHasExpirationDate ?? product.productHasExpirationDate
+
         product.productExpirationDate =
             dto.productExpirationDate ?? product.productExpirationDate
+
         product.offerStartDate = dto.offerStartDate ?? product.offerStartDate
         product.offerExpiration = dto.offerExpiration ?? product.offerExpiration
 

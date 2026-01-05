@@ -29,6 +29,10 @@ export class CreateProductUseCase {
         product.establishmentId = establishment_id
         product.categoryId = data.categoryId
         product.name = data.name
+
+        product.weight = data.weight
+        product.unitOfMeasure = data.unitOfMeasure
+
         product.priceOriginal = data.originalPrice
         product.priceOffer = data.offerPrice
 
@@ -37,6 +41,9 @@ export class CreateProductUseCase {
             data.offerPrice
         )
 
+        product.productHasExpirationDate = data.productExpirationDate
+            ? true
+            : false
         product.productExpirationDate = data.productExpirationDate ?? null
 
         product.offerStartDate = data.offerStartDate
