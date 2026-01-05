@@ -31,7 +31,7 @@ export class ProductRepository
             order: { displayOrder: "DESC" }
         })
 
-        return ++product.displayOrder
+        return product && product.displayOrder ? ++product.displayOrder : 1
     }
 
     async getProductsByEstablishment(
