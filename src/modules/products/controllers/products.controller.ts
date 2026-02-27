@@ -27,8 +27,6 @@ import { UpdateProductUseCase } from "../application/use-cases/update-product.us
 
 @Controller("api/products")
 @ApiTags("Returns all categories and products linked to an establishment.")
-@ApiBearerAuth()
-@UseGuards(AuthGuard)
 export class ProductsController {
     constructor(
         private readonly createProduct: CreateProductUseCase,
@@ -42,7 +40,6 @@ export class ProductsController {
         type: CategoryProductsResponseDto,
         isArray: true
     })
-    @ApiResponse({ status: 401, description: "Acesso não autorizado" })
     @ApiResponse({ status: 404, description: "Id não encontrado" })
     @Get("establishment/:id")
     async getProductsByEstablishment(@Param("id") establishmentId: string) {
@@ -51,6 +48,8 @@ export class ProductsController {
         )
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @ApiResponse({
         status: 200,
         type: CreateProductDto,
@@ -66,6 +65,8 @@ export class ProductsController {
         return await this.createProduct.execute(user.sub, product)
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @ApiResponse({
         status: 200,
         type: CreateProductDto,
@@ -85,6 +86,11 @@ export class ProductsController {
         return this.updateProduct.execute(id, user.sub, dto)
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
+    @ApiResponse({ status: 200, description: "Produto removido com sucesso" })
+    @ApiResponse({ status: 401, description: "Acesso não autorizado" })
+    @ApiResponse({ status: 404, description: "Produto não encontrado" })
     @Delete(":id")
     async remove(
         @Param("id") id: string,
