@@ -1,11 +1,13 @@
 import {
     Body,
     Controller,
+    Delete,
     HttpCode,
     HttpStatus,
     Patch,
     Post,
     Put,
+    UnauthorizedException,
     UseGuards
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger"
@@ -20,6 +22,7 @@ import { CreateUserDto } from "./application/dto/create-user.dto"
 import { UpdateUserDto } from "./application/dto/update-user.dto"
 import { UserResponseDto } from "./application/dto/user-response.dto"
 import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"
+import { DeleteUserUseCase } from "./application/use-cases/delete-user.use-case"
 import { UpdatePasswordUseCase } from "./application/use-cases/update-password.use-case"
 import { UpdateUserUseCase } from "./application/use-cases/update-user.use-case"
 
@@ -28,6 +31,7 @@ import { UpdateUserUseCase } from "./application/use-cases/update-user.use-case"
 export class UserController {
     constructor(
         private readonly create: CreateServiceUseCase,
+        private readonly deleteUser: DeleteUserUseCase,
         private readonly updatePass: UpdatePasswordUseCase,
         private readonly updateUser: UpdateUserUseCase
     ) {}
@@ -75,5 +79,22 @@ export class UserController {
         @Body() updateUserdto: UpdateUserDto
     ) {
         return await this.updateUser.execute(user.sub, updateUserdto)
+    }
+
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({ status: 200, description: "Usuário removido com sucesso" })
+    @ApiResponse({ status: 401, description: "Acesso não autorizado" })
+    @ApiResponse({ status: 404, description: "Usuário não encontrado" })
+    @UseGuards(AuthGuard)
+    @Delete()
+    async remove(@User() user: JwtPayload): Promise<{ message: string }> {
+        if (user.type === "COMPANY")
+            throw new UnauthorizedException(
+                "Empresa não pode ser removida por essa rota"
+            )
+
+        await this.deleteUser.execute(user.sub)
+        return { message: "Usuário removido com sucesso" }
     }
 }

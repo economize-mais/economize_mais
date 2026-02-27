@@ -8,6 +8,7 @@ import { User } from "@/modules/users/domain/entities/users.entity"
 import { UserController } from "./users.controller"
 
 import { CreateServiceUseCase } from "./application/use-cases/create-user.use-case"
+import { DeleteUserUseCase } from "./application/use-cases/delete-user.use-case"
 import { UpdatePasswordUseCase } from "./application/use-cases/update-password.use-case"
 import { UpdateUserUseCase } from "./application/use-cases/update-user.use-case"
 
@@ -20,6 +21,7 @@ import { UserRepository } from "./infrastructure/repositories/users.repository"
     controllers: [UserController],
     providers: [
         CreateServiceUseCase,
+        DeleteUserUseCase,
         UpdatePasswordUseCase,
         UpdateUserUseCase,
         {
