@@ -46,19 +46,21 @@ export class CreateUserDto {
     })
     cpf: string
 
-    @ApiProperty({ example: "(35)99942-1613", maxLength: 20 })
+    @ApiProperty({ example: "(35)99942-1613", maxLength: 20, required: false })
     @IsString()
+    @IsOptional()
     @MaxLength(20, { message: "O telefone deve ter no máximo 20 caracteres" })
-    phone: string
+    phone?: string
 
     @ApiProperty({
         description: "Data de nascimento do usuário (YYYY-MM-DD)",
-        example: "1990-01-01"
+        example: "1990-01-01",
+        required: false
     })
     @IsDate({ message: "A data de nascimento deve ser uma data válida" })
-    @IsNotEmpty({ message: "A data de nascimento é obrigatória" })
+    @IsOptional()
     @Transform(({ value }) => startOfDayInTimezone(value))
-    birthDate: Date
+    birthDate?: Date
 
     @ApiProperty({ enum: Gender, required: false })
     @IsEnum(Gender)

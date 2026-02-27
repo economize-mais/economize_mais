@@ -35,8 +35,8 @@ export class User {
     @Column({ type: "varchar", length: 14, unique: true })
     cpf: string
 
-    @Column({ type: "varchar", length: 20, nullable: false })
-    phone: string
+    @Column({ type: "varchar", length: 20, nullable: true })
+    phone?: string
 
     @Column({ name: "birth_date", type: "date", nullable: true })
     birthDate?: Date
