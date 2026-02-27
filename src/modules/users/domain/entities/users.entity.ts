@@ -45,7 +45,7 @@ export class User {
         type: "char",
         length: 1,
         nullable: true,
-        comment: "M = Male, F = Female"
+        comment: "M = Male, F = Female, O = Other"
     })
     gender?: Gender
 
