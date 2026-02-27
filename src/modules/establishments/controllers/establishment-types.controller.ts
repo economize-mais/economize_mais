@@ -1,7 +1,5 @@
-import { Controller, Get, UseGuards } from "@nestjs/common"
-import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger"
-
-import { AuthGuard } from "@/auth/infrastructure/auth.guard"
+import { Controller, Get } from "@nestjs/common"
+import { ApiResponse, ApiTags } from "@nestjs/swagger"
 
 import { EstablishmentTypeResponse } from "../application/dto/establishiment-type/get-establishment-types.response"
 import { EstablishmentTypesUseCase } from "../application/use-cases/establishiment-type/get-establishiment-types.use-case"
@@ -13,14 +11,11 @@ export class EstablishmentTypesController {
         private readonly getEstablishmentTypes: EstablishmentTypesUseCase
     ) {}
 
-    @ApiBearerAuth()
     @ApiResponse({
         status: 200,
         type: EstablishmentTypeResponse,
         isArray: true
     })
-    @ApiResponse({ status: 401, description: "Acesso não autorizado" })
-    @UseGuards(AuthGuard)
     @Get()
     async getAllActiveTypes() {
         return await this.getEstablishmentTypes.execute()
