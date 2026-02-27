@@ -65,6 +65,12 @@ export class CreateUserDto {
     @ApiProperty({ enum: Gender, required: false })
     @IsEnum(Gender)
     @IsOptional()
+    @Transform(({ value }) => {
+        if (!value || value === "" || value === null || value === undefined) {
+            return Gender.OTHER
+        }
+        return value
+    })
     gender?: Gender
 
     @ApiProperty({ type: OmitType(AddressDto, ["id"] as const), isArray: true })
