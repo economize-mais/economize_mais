@@ -13,7 +13,9 @@ export class UserValidator {
         if (data instanceof CreateUserDto)
             PasswordValidator.validate(data.password)
 
-        LegalAgeValidator.validate(data.birthDate)
+        if (data.birthDate) {
+            LegalAgeValidator.validate(data.birthDate)
+        }
 
         switch (data.type) {
             case "USER":
