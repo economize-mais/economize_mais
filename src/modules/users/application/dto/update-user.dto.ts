@@ -26,41 +26,46 @@ export class UpdateUserDto {
     type: UserType
 
     @ApiProperty({ example: "John Doe", required: false })
-    @IsString()
     @IsOptional()
+    @IsString()
     name?: string
 
     @ApiProperty({ example: "user@example.com", required: false })
-    @IsEmail()
     @IsOptional()
+    @IsEmail()
     email?: string
 
     @ApiProperty({ example: "12345678901", required: false })
+    @IsOptional()
+    @IsString()
     @Matches(/^\d{11}$/, {
         message: "CPF deve ter 11 digitos"
     })
-    @IsString()
-    @IsOptional()
     cpf?: string
 
     @ApiProperty({ example: "(35)99942-1613", maxLength: 20, required: false })
-    @MaxLength(20, { message: "O telefone deve ter no máximo 20 caracteres" })
-    @IsString()
     @IsOptional()
+    @IsString()
+    @MaxLength(20, { message: "O telefone deve ter no máximo 20 caracteres" })
     phone?: string
 
     @ApiProperty({
         description: "Data de nascimento do usuário (YYYY-MM-DD)",
         example: "1990-01-01"
     })
-    @IsDate({ message: "A data de nascimento deve ser uma data válida" })
     @IsOptional()
-    @Transform(({ value }) => startOfDayInTimezone(value))
+    @IsDate({ message: "A data de nascimento deve ser uma data válida" })
+    @Transform(({ value }) => {
+        if (!value || value === "" || value === null || value === undefined) {
+            return undefined
+        }
+        return startOfDayInTimezone(value)
+    })
     birthDate?: Date
 
     @ApiProperty({ enum: Gender, required: false })
-    @IsEnum(Gender)
     @IsOptional()
+    @IsEnum(Gender)
     @Transform(({ value }) => {
         if (!value || value === "" || value === null || value === undefined) {
             return Gender.OTHER
