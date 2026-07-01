@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common"
 
 import { DatabaseModule } from "./infra/database/database.module"
 
+import { AdminModule } from "./modules/admin/admin.module"
 import { EstablishmentModule } from "./modules/establishments/establishment.module"
 import { SigninModule } from "./modules/login/signin.module"
 import { OriginModule } from "./modules/origin/origin.module"
@@ -14,6 +15,7 @@ import { ZipCodeModule } from "./modules/zip-code/zip-code.module"
 @Module({
     imports: [
         DatabaseModule,
+        AdminModule,
         EstablishmentModule,
         OriginModule,
         ProductsModule,
