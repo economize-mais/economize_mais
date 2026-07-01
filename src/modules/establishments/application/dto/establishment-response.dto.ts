@@ -29,6 +29,9 @@ export class EstablishmentResponseDto {
     @ApiProperty({ example: "https://example.com/logo.png", required: false })
     logoUrl?: string
 
+    @ApiProperty({ example: true })
+    isActive: boolean
+
     @ApiProperty({ example: "eyJhbGciOiJIUzI1NiIsInR5cCI6..." })
     accessToken?: string
 

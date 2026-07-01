@@ -7,6 +7,7 @@ import {
     IsNotEmpty,
     IsOptional,
     IsString,
+    IsUUID,
     Matches,
     MaxLength,
     ValidateNested
@@ -56,6 +57,16 @@ export class CreateEstablishmentDto {
     @IsOptional()
     @IsString()
     logoUrl?: string
+
+    @ApiProperty({
+        type: [String],
+        required: false,
+        description: "IDs dos tipos de estabelecimento"
+    })
+    @IsOptional()
+    @IsArray()
+    @IsUUID(4, { each: true })
+    typeIds?: string[]
 
     @ApiProperty({ type: OmitType(AddressDto, ["id"] as const), isArray: true })
     @IsOptional()

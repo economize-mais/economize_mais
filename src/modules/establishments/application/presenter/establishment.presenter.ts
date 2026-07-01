@@ -24,6 +24,7 @@ export const establishmentToResponse = (
     dto.cnpj = establishment.cnpj
     dto.phone = establishment.phone
     dto.logoUrl = establishment.logoUrl
+    dto.isActive = establishment.isActive
     dto.addresses = plainToInstance(AddressDto, establishment.addresses, {
         excludeExtraneousValues: true
     })
