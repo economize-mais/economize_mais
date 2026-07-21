@@ -20,6 +20,9 @@ export class EstablishmentTypeRepository
     }
 
     async getAllActiveTypesWithEstablishments() {
-        return await this.repo.find({ order: { displayOrder: "ASC" } })
+        return await this.repo.find({
+            where: { isActive: true },
+            order: { displayOrder: "ASC" }
+        })
     }
 }
