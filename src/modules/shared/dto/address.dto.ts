@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer"
+import { Expose, Transform } from "class-transformer"
 import {
     IsNotEmpty,
     IsOptional,
@@ -52,8 +52,9 @@ export class AddressDto {
     @ApiProperty({ example: "Apto 101" })
     @IsOptional()
     @IsString()
+    @Transform(({ value }) => value ?? '')
     @Expose()
-    complement?: string
+    complement: string
 
     @ApiProperty({ example: "01310-001", maxLength: 10 })
     @IsNotEmpty()
