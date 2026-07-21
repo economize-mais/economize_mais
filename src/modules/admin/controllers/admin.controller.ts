@@ -11,6 +11,12 @@ import {
     UseGuards,
     UseInterceptors
 } from "@nestjs/common"
+import { CreateEstablishmentTypeAdminDto } from "../application/dto/create-establishment-type-admin.dto"
+import { UpdateEstablishmentTypeAdminDto } from "../application/dto/update-establishment-type-admin.dto"
+import { CreateEstablishmentTypeAdminUseCase } from "../application/use-cases/create-establishment-type-admin.use-case"
+import { ListEstablishmentTypesAdminUseCase } from "../application/use-cases/list-establishment-types-admin.use-case"
+import { UpdateEstablishmentTypeAdminUseCase } from "../application/use-cases/update-establishment-type-admin.use-case"
+import { UpdateEstablishmentTypeStatusAdminUseCase } from "../application/use-cases/update-establishment-type-status-admin.use-case"
 import { FileInterceptor } from "@nestjs/platform-express"
 import {
     ApiBody,
@@ -37,7 +43,11 @@ export class AdminController {
         private readonly listUseCase: ListEstablishmentsAdminUseCase,
         private readonly updateUseCase: UpdateEstablishmentAdminUseCase,
         private readonly statusUseCase: UpdateStatusAdminUseCase,
-        private readonly uploadLogoUseCase: UploadLogoAdminUseCase
+        private readonly uploadLogoUseCase: UploadLogoAdminUseCase,
+        private readonly listTypesUseCase: ListEstablishmentTypesAdminUseCase,
+        private readonly createTypeUseCase: CreateEstablishmentTypeAdminUseCase,
+        private readonly updateTypeUseCase: UpdateEstablishmentTypeAdminUseCase,
+        private readonly updateTypeStatusUseCase: UpdateEstablishmentTypeStatusAdminUseCase
     ) {}
 
     @ApiResponse({
@@ -92,5 +102,40 @@ export class AdminController {
     @Patch("establishments/:id/status")
     async updateStatus(@Param("id") id: string, @Body() dto: UpdateStatusDto) {
         return this.statusUseCase.execute(id, dto.isActive)
+    }
+
+    // ── Tipos de estabelecimento ──────────────────────────────────────
+
+    @ApiResponse({ status: 200, description: "Lista todos os tipos de estabelecimento" })
+    @Get("establishment-types")
+    async listTypes() {
+        return this.listTypesUseCase.execute()
+    }
+
+    @ApiResponse({ status: 201, description: "Cria um novo tipo de estabelecimento" })
+    @Post("establishment-types")
+    async createType(@Body() dto: CreateEstablishmentTypeAdminDto) {
+        return this.createTypeUseCase.execute(dto)
+    }
+
+    @ApiResponse({ status: 200, description: "Atualiza um tipo de estabelecimento" })
+    @ApiResponse({ status: 404, description: "Não encontrado" })
+    @Patch("establishment-types/:id")
+    async updateType(
+        @Param("id") id: string,
+        @Body() dto: UpdateEstablishmentTypeAdminDto
+    ) {
+        return this.updateTypeUseCase.execute(id, dto)
+    }
+
+    @ApiResponse({ status: 200, description: "Ativa ou inativa um tipo de estabelecimento" })
+    @ApiResponse({ status: 404, description: "Não encontrado" })
+    @HttpCode(HttpStatus.OK)
+    @Patch("establishment-types/:id/status")
+    async updateTypeStatus(
+        @Param("id") id: string,
+        @Body() dto: UpdateStatusDto
+    ) {
+        return this.updateTypeStatusUseCase.execute(id, dto.isActive)
     }
 }
