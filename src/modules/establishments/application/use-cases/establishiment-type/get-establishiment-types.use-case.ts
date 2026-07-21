@@ -29,6 +29,7 @@ export class EstablishmentTypesUseCase {
                         a.establishment.displayOrder -
                         b.establishment.displayOrder
                 )
+                .filter((item) => item.establishment.isActive)
                 .map((item) => {
                     const dto = new EstablishmentSummaryResponse()
                     dto.id = item.establishment.id
